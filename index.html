@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="static/onyx-drawer.min.css">
 <link rel="stylesheet" href="static/onyx-toast.min.css">
 <link rel="stylesheet" href="static/docs.min.css"></head>
-<body>
+<body class="ox-shell">
 
 <!-- ══════════════════════════════════════════════════════════════════════════
      导航栏 · .ox-navbar（组件库实例，不是文档站专用）
@@ -87,6 +87,14 @@
     </div>
   </div>
 </header>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     App shell · .ox-shell（body）+ .ox-shell__body
+     ══════════════════════════════════════════════════════════════════════════
+     导航栏留在滚动区之外：滚动条属于这个内层容器，轨道从导航栏*下方*开始，
+     导航栏因此横跨整个窗口宽度，不再被轨道切掉 10px。
+-->
+<div class="ox-shell__body">
 
 <div class="doc-shell">
 
@@ -228,6 +236,7 @@
   --ox-container-w: 1180px;   /* 内容宽度 */
   --ox-sidebar-w: 256px;      /* 侧边栏宽度 */
   --ox-navbar-h: 60px;        /* 导航栏高度 */
+  --ox-top-inset: 60px;       /* 滚动区顶部被导航栏盖住的高度（.ox-shell 里自动为 0） */
 }
 
 /* 高亮配色也能改（见「代码容器」） */
@@ -850,6 +859,15 @@
           </button>
         </div>
 
+        <div class="doc-rule"><span>App shell · 导航栏不进滚动区</span></div>
+        <p class="doc-demo__caption">经典滚动条属于<strong>什么在滚动</strong>：整页滚动时它属于视口，会被画在窗口的整个右边缘上，
+          连导航栏那一行也一起压住 —— 导航栏的盒子止于 <code class="ox-mono">clientWidth</code>，看起来就比窗口窄了一截，
+          而那条缝是视口的一部分，导航栏上的 CSS 改不了它。<br>
+          把滚动交给一个从导航栏<strong>下方</strong>开始的内层容器（本页就是这么做的），轨道便从导航栏下方开始：
+          <code class="ox-mono">&lt;body class="ox-shell"&gt;</code> + <code class="ox-mono">&lt;div class="ox-shell__body"&gt;…&lt;/div&gt;</code>。
+          <code class="ox-mono">.ox-shell</code> 会把 <code class="ox-mono">--ox-top-inset</code> 置为 0，
+          于是 <code class="ox-mono">.ox-sidebar--sticky</code> 与锚点偏移自动改成从容器顶部量，两种布局下的视觉位置完全一致。</p>
+
         <details class="doc-src">
           <summary>查看代码</summary>
           <pre class="ox-code" data-lang="html">&lt;header class="ox-navbar ox-navbar--sticky"&gt;
@@ -1453,7 +1471,7 @@ OnyxUI.drawer.toggle(el, trigger);</pre>
             <code class="ox-mono">&lt;pre class="ox-code"&gt;</code> 会被 onyx-code.js 自动包进容器并补上复制按钮；
             标题与文案用 <code class="ox-mono">data-title / data-copy-label / data-copied-label</code></dd>
           <dt>文本</dt><dd><code class="ox-mono">.ox-display / .ox-h1 ~ .ox-h4 / .ox-lead / .ox-body / .ox-small / .ox-caption / .ox-overline / .ox-quote / .ox-code / .ox-codeblock / .ox-prose</code></dd>
-          <dt>布局</dt><dd><code class="ox-mono">.ox-container / .ox-stack / .ox-row / .ox-grid[--2|-3|-auto] / .ox-spacer / .ox-divider</code></dd>
+          <dt>布局</dt><dd><code class="ox-mono">.ox-shell + .ox-shell__body / .ox-container / .ox-stack / .ox-row / .ox-grid[--2|-3|-auto] / .ox-spacer / .ox-divider</code></dd>
           <dt>工具类</dt><dd><code class="ox-mono">.ox-text-muted / .ox-text-subtle / .ox-text-success / .ox-text-danger / .ox-mono / .ox-w-full / .ox-sr-only / .ox-noselect / .ox-selectable</code></dd>
         </dl>
 
@@ -1472,7 +1490,7 @@ OnyxUI.drawer.toggle(el, trigger);</pre>
 --ox-radius-xs|sm|md|lg|xl|pill
 --ox-h-xs|sm|md|lg         控件高度
 --ox-shadow-xs|sm|md|lg
---ox-container-w / --ox-sidebar-w / --ox-navbar-h
+--ox-container-w / --ox-sidebar-w / --ox-navbar-h / --ox-top-inset
 --ox-dur / --ox-ease</pre>
         </details>
       </div>
@@ -1489,6 +1507,8 @@ OnyxUI.drawer.toggle(el, trigger);</pre>
     <a class="ox-btn ox-btn--ghost ox-btn--sm" href="#overview">回到顶部</a>
   </div>
 </footer>
+
+</div><!-- /.ox-shell__body -->
 
 <script src="static/onyx-ui.min.js"></script>
 <!-- 高亮引擎：外置，随便换（也可以什么都不引入，代码块就是一个纯文本框） -->

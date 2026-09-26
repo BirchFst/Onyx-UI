@@ -38,7 +38,7 @@
      03 · Type helpers           10 · Avatar & user
      04 · Card                   11 · Skeleton / Progress / Divider / Kbd
      05 · Button                 12 · Tooltip / Segmented
-     06 · Field / Input / Select 13 · Navbar
+     06 · Field / Input / Select 13 · Navbar + app shell
                                  14 · Dropdown menu
                                  15 · Sidebar  (drawer → extension)
                                  16 · Type presets & prose
@@ -232,6 +232,12 @@
   --ox-container-w: 1180px;
   --ox-sidebar-w: 256px;
   --ox-navbar-h: 60px;
+  /* How much of a sticky navbar hangs over the top of whatever scrolls.
+     Default assumes the page scrolls and the navbar overlays it; `.ox-shell`
+     drops it to 0 because there the navbar sits outside the scrolling area
+     and covers nothing. Anything that measures from the top of the scroller
+     (.ox-sidebar--sticky, anchor `scroll-margin-top`) reads this. */
+  --ox-top-inset: var(--ox-navbar-h);
 
   /* — elevation ———————————————————————————————————————— */
   --ox-shadow-c1: rgba(16, 24, 40, .07);
@@ -1433,6 +1439,56 @@
 
 
 /* ==========================================================================
+   13b · App shell
+   ==========================================================================
+   What scrolls is what owns the scrollbar. When the *page* scrolls, the
+   scrollbar belongs to the viewport, and a classic (non-overlay) scrollbar is
+   then painted down the full right edge of the window — across the navbar's
+   row — while the navbar's own box stops at `clientWidth`, `--ox-scrollbar-size`
+   short of the window edge. That reads as "the track covers the right of the
+   navbar", and no rule on the navbar can fix it: the strip is the viewport,
+   not the content box, and nothing paints there.
+
+   Give the scrolling to an element that starts *below* the navbar instead:
+
+     <body class="ox-shell">
+       <header class="ox-navbar">…</header>
+       <div class="ox-shell__body">   ← the only scroll container
+         …page content…
+       </div>
+     </body>
+
+   The navbar now spans the full window width and the scrollbar's track begins
+   underneath it. `--ox-top-inset` drops to 0 along with it — nothing covers
+   the top of the scroller any more, so `.ox-sidebar--sticky` and anchor
+   scrolling measure from the container's own top edge.
+   ========================================================================== */
+.ox-shell {
+  --ox-top-inset: 0px;
+
+  display: flex;
+  flex-direction: column;
+  /* dvh keeps the shell exactly one screen tall while mobile browser chrome
+     collapses; the vh line is the fallback for older engines */
+  height: 100vh;
+  height: 100dvh;
+  /* On <body> this propagates to the viewport, which is the whole point: the
+     window keeps no scrollbar of its own to draw across the navbar. */
+  overflow: hidden;
+}
+.ox-shell > .ox-navbar { flex: none; }
+
+.ox-shell__body {
+  flex: 1 1 auto;
+  /* a flex item refuses to shrink below its own content without this — the
+     container would grow taller instead of scrolling */
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+
+/* ==========================================================================
    14 · Dropdown menu
    ==========================================================================
    Pure-CSS, keyboard accessible (native <details>/<summary>).
@@ -1568,8 +1624,12 @@
 }
 .ox-sidebar--sticky {
   position: sticky;
-  top: calc(var(--ox-navbar-h) + var(--ox-sp-4));
+  /* relative to the scrolling area, not the window — see `--ox-top-inset` */
+  top: calc(var(--ox-top-inset) + var(--ox-sp-4));
   align-self: start;
+  /* subtracted in both layouts: the page one (navbar overlays the top of the
+     viewport) and the `.ox-shell` one (100vh - navbar = the scroller's own
+     height), leaving the same 32px of slack above the window's bottom edge */
   max-height: calc(100vh - var(--ox-navbar-h) - var(--ox-sp-8));
   overflow-y: auto;
   overscroll-behavior: contain;

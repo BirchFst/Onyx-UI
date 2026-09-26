@@ -163,6 +163,7 @@ CSS 会补回被压缩器丢掉的 `@charset "UTF-8";`。
 | `--ox-container-w` | `1180px` | `.ox-container` / `.ox-navbar__inner` 最大宽度 |
 | `--ox-sidebar-w` | `256px` | `.ox-sidebar` 宽度 |
 | `--ox-navbar-h` | `60px` | 导航栏高度（同时决定 sticky 侧边栏的偏移） |
+| `--ox-top-inset` | `var(--ox-navbar-h)` | 滚动区顶部被 sticky 导航栏盖住的高度；`.ox-shell` 里为 `0px`（导航栏在滚动区之外） |
 | `--ox-sp-1…10` | 4…40 px | 间距梯度 |
 | `--ox-fs-xs…3xl` | 12…25 px | 字号梯度 |
 | `--ox-font-sans` `--ox-font-mono` | 系统字体栈 | 字体 |
@@ -196,6 +197,9 @@ CSS 会补回被压缩器丢掉的 `@charset "UTF-8";`。
 `::-webkit-scrollbar` 的全部样式。滑块用「透明边框 + `background-clip: padding-box`」实现，
 所以 10px 的可点区域里显示的是 4px 的细滑块。
 
+滚动条属于**什么在滚动**：整页滚动时它属于视口，会被画在窗口的整个右边缘上（包括吸顶导航栏那一行），
+于是导航栏看起来比窗口窄了一截。需要导航栏横跨整宽就用 [App shell](#app-shell--让滚动条从导航栏下方开始)。
+
 ---
 
 ## 布局与工具类
@@ -203,6 +207,7 @@ CSS 会补回被压缩器丢掉的 `@charset "UTF-8";`。
 | 类名 | 说明 |
 | --- | --- |
 | `.ox-container` | 居中定宽容器（`--ox-container-w` + 左右 20px padding） |
+| `.ox-shell` `.ox-shell__body` | App shell：导航栏留在滚动区之外，滚动条轨道从导航栏下方开始（见「导航栏」一节） |
 | `.ox-stack` | 纵向流式布局，间距用 `style="--ox-stack-gap:24px"` 调整 |
 | `.ox-row` `.ox-row--tight` | 横向自动换行排列 |
 | `.ox-grid` `--2` `--3` `--auto` | 网格；`--2/--3` 在 760px 以下自动塌成单列 |
@@ -819,7 +824,7 @@ OnyxUI.codeblock.labels.copy = 'Kopieren' // 全局改文案
 
 | 类名 / 修饰符 | 说明 |
 | --- | --- |
-| `--sticky` | 吸顶 + 半透明毛玻璃 |
+| `--sticky` | 吸顶 + 半透明毛玻璃（整页滚动时用；改用 `.ox-shell` 后不需要，见下） |
 | `--flush` | 内容区撑满宽度（不限 `--ox-container-w`） |
 | `--solid` | 取消半透明 |
 | `--bordered` | 额外加一层底部投影 |
@@ -843,6 +848,40 @@ OnyxUI.codeblock.labels.copy = 'Kopieren' // 全局改文案
 
 需要底部整条时（如 Tabs 风格），或想要旧的药丸反馈，用 `--pill` 修饰符即可。
 
+#### App shell · 让滚动条从导航栏下方开始
+
+经典滚动条（Windows / Chromium 那种占 10px 布局宽的）属于**什么在滚动**。整页滚动时它属于视口，
+于是被画在窗口的整个右边缘上 —— 包括导航栏那一行：导航栏的盒子止于 `clientWidth`，比窗口窄 10px，
+看起来就像右侧被轨道压掉一块。这条缝是视口的一部分，不是内容盒，**导航栏上的任何 CSS 都改不了它**。
+
+把滚动交给一个从导航栏**下方**开始的内层容器就行：
+
+```html
+<body class="ox-shell">
+  <header class="ox-navbar">…</header>
+
+  <div class="ox-shell__body">      <!-- 唯一的滚动容器 -->
+    <div class="ox-container">…页面内容…</div>
+    <footer>…</footer>
+  </div>
+</body>
+```
+
+| 类名 | 说明 |
+| --- | --- |
+| `.ox-shell` | 加在 `<body>` 上：`100dvh` 的纵向 flex，`overflow: hidden`（在 `body` 上会传播到视口 → 窗口自己不再有滚动条） |
+| `.ox-shell__body` | 唯一滚动区：`flex:1` + `min-height:0` + `overflow-y:auto`。滚动条轨道只在这个盒子内，也就是**从导航栏下方开始** |
+
+要点：
+
+- 导航栏必须是 `.ox-shell` 的**直接子元素**（`flex: none`，不参与高度伸缩）；`--sticky` 可以去掉，加上也无害。
+- `.ox-shell` 会把 `--ox-top-inset` 置为 `0px`：滚动区顶部不再被导航栏盖住，所以 `.ox-sidebar--sticky`
+  的吸顶偏移、锚点 `scroll-margin-top` 都改成从**容器顶部**量。两种布局下的视觉位置完全一致，业务 CSS 不用改。
+- 带抽屉扩展时，抽屉会把 `.ox-no-scroll` 加在 `body` 上；除了视口，它也会一并锁住 `.ox-shell__body`，
+  否则内容仍会在抽屉背后滚动。
+- 不希望页面变成一个 100dvh 的固定壳（例如内容需要随地址栏一起滚）就继续用「整页滚动 + `--sticky`」，
+  代价是导航栏右侧会留出滚动条那一条缝。
+
 ### 侧边栏 · `.ox-sidebar`
 
 ```html
@@ -864,7 +903,7 @@ OnyxUI.codeblock.labels.copy = 'Kopieren' // 全局改文案
 | 类名 / 修饰符 | 说明 |
 | --- | --- |
 | `.ox-sidebar` | 定宽纵向栏（宽度 `--ox-sidebar-w`），纵向间距 20px |
-| `--sticky` | 跟随滚动、独立溢出，偏移自动使用 `--ox-navbar-h` |
+| `--sticky` | 吸顶 + 独立溢出，偏移自动使用 `--ox-top-inset`（默认 `--ox-navbar-h`，用 `.ox-shell` 时为 0） |
 | `__group` | 一组导航项 |
 | `__title` | 分组标题（11px 大写） |
 | `__item` | 导航项；`is-active` 时浅底 + 加重 + **左侧 3px 墨黑指示条** |

@@ -36,8 +36,10 @@
   min-width: 0;
 }
 
-/* sections scroll under the sticky navbar */
-.doc-section { scroll-margin-top: calc(var(--ox-navbar-h) + 20px); }
+/* sections scroll under the sticky navbar. `--ox-top-inset` is 0 inside the
+   `.ox-shell` used by this page — there the navbar is outside the scroller and
+   covers nothing, so the gap is just the 20px of breathing room. */
+.doc-section { scroll-margin-top: calc(var(--ox-top-inset) + 20px); }
 
 @media (max-width: 1024px) {
   .doc-shell {

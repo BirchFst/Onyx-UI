@@ -66,3 +66,8 @@
 
 /* body lock while a drawer is open (applied by onyx-ui.js) */
 .ox-no-scroll { overflow: hidden; }
+
+/* Inside an app shell the viewport does not scroll at all, so locking <body>
+   would leave the real scroller — `.ox-shell__body` — still running behind the
+   drawer. Lock that one too. */
+.ox-shell.ox-no-scroll > .ox-shell__body { overflow: hidden; }
