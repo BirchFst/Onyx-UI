@@ -1,0 +1,137 @@
+/*! Onyx UI · code container extension · v1.7.0 · MIT Licensed
+ * -----------------------------------------------------------------------------
+ * Optional. Two things:
+ *
+ *   1. `.ox-codeblock` — the code container (toolbar + title + copy button)
+ *   2. a syntax-highlighting palette
+ *
+ * Load AFTER onyx-ui.css. Pair it with onyx-code.js for the wrapping and the
+ * copy action.
+ *
+ *   <link rel="stylesheet" href="onyx-ui.css">
+ *   <link rel="stylesheet" href="extensions/onyx-code.css">
+ *
+ * Highlighting itself is deliberately NOT bundled — bring the engine you want
+ * (Prism, highlight.js, …). The palette below maps both of their class names
+ * onto its own `--ox-tok-*` variables, so swapping engines needs no CSS work,
+ * and hand-writing `<span class="ox-tok-keyword">` works with no engine at all.
+ * ========================================================================== */
+
+
+/* ==========================================================================
+   Palette · `--ox-tok-*`
+   Defaults derive from the semantic text colours, which already flip with the
+   theme — so there is no second light/dark table to keep in sync. Override any
+   of them to re-skin: `--ox-tok-keyword: hotpink;`
+   ========================================================================== */
+:root {
+  --ox-tok-comment: var(--ox-text-subtle);
+  --ox-tok-punct: var(--ox-text-subtle);
+  --ox-tok-string: var(--ox-success-text);
+  --ox-tok-regex: var(--ox-danger-text);
+  --ox-tok-keyword: var(--ox-purple-text);
+  --ox-tok-number: var(--ox-warning-text);
+  --ox-tok-tag: var(--ox-info-text);
+  --ox-tok-attr: var(--ox-warning-text);
+  --ox-tok-func: var(--ox-info-text);
+  --ox-tok-operator: var(--ox-text-muted);
+}
+
+/* — ours ————————————————————————————————————————————————— */
+.ox-tok-comment { color: var(--ox-tok-comment); font-style: italic; }
+.ox-tok-string { color: var(--ox-tok-string); }
+.ox-tok-regex { color: var(--ox-tok-regex); }
+.ox-tok-keyword { color: var(--ox-tok-keyword); }
+.ox-tok-number { color: var(--ox-tok-number); }
+.ox-tok-tag { color: var(--ox-tok-tag); }
+.ox-tok-attr { color: var(--ox-tok-attr); }
+.ox-tok-func { color: var(--ox-tok-func); }
+.ox-tok-punct { color: var(--ox-tok-punct); }
+.ox-tok-operator { color: var(--ox-tok-operator); }
+
+/* — Prism (`.token.*`) ————————————————————————————————————— */
+.token.comment, .token.prolog, .token.doctype, .token.cdata { color: var(--ox-tok-comment); font-style: italic; }
+.token.punctuation { color: var(--ox-tok-punct); }
+.token.string, .token.char, .token.attr-value, .token.inserted { color: var(--ox-tok-string); }
+.token.regex, .token.important, .token.deleted { color: var(--ox-tok-regex); }
+.token.keyword, .token.rule, .token.atrule, .token.selector, .token.important { color: var(--ox-tok-keyword); }
+.token.number, .token.boolean, .token.constant, .token.symbol { color: var(--ox-tok-number); }
+.token.tag, .token.selector { color: var(--ox-tok-tag); }
+.token.attr-name, .token.property, .token.class-name, .token.builtin { color: var(--ox-tok-attr); }
+.token.function { color: var(--ox-tok-func); }
+.token.operator, .token.entity, .token.url, .token.namespace, .token.variable { color: var(--ox-tok-operator); }
+
+/* — highlight.js (`.hljs-*`) ——————————————————————————————— */
+.hljs-comment, .hljs-quote { color: var(--ox-tok-comment); font-style: italic; }
+.hljs-string, .hljs-meta .hljs-string, .hljs-symbol, .hljs-bullet { color: var(--ox-tok-string); }
+.hljs-regexp, .hljs-link, .hljs-deletion { color: var(--ox-tok-regex); }
+.hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-doctag, .hljs-type, .hljs-name { color: var(--ox-tok-keyword); }
+.hljs-number, .hljs-built_in, .hljs-meta, .hljs-section, .hljs-title.class_ { color: var(--ox-tok-number); }
+.hljs-tag, .hljs-selector-id, .hljs-selector-class, .hljs-selector-attr, .hljs-selector-pseudo { color: var(--ox-tok-tag); }
+.hljs-attr, .hljs-attribute, .hljs-property, .hljs-variable, .hljs-template-variable, .hljs-params { color: var(--ox-tok-attr); }
+.hljs-title, .hljs-title.function_, .hljs-function .hljs-title { color: var(--ox-tok-func); }
+.hljs-operator, .hljs-punctuation { color: var(--ox-tok-operator); }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 650; }
+.hljs-addition { color: var(--ox-tok-string); }
+
+
+/* ==========================================================================
+   Container · `.ox-codeblock`
+   ========================================================================== */
+/* --------------------------------------------------------------------------
+   Code container · `.ox-codeblock`
+   A toolbar (title + copy) above a scroller. Putting the copy button in the
+   bar instead of floating it over the code means it never covers the first
+   line — the old absolute-positioned button needed 76px of right padding on
+   the <pre> to stay out of the way.
+   `<pre class="ox-code">` still works on its own; onyx-ui.js wraps it in this
+   container and fills in the bar, so plain markup upgrades for free.
+   -------------------------------------------------------------------------- */
+.ox-codeblock {
+  position: relative;
+  border: 1px solid var(--ox-border);
+  border-radius: var(--ox-radius-md);
+  background: var(--ox-surface-2);
+  overflow: hidden;
+}
+.ox-codeblock__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ox-sp-2);
+  min-height: 38px;
+  padding: 5px 8px 5px 15px;
+  border-bottom: 1px solid var(--ox-border);
+  background: var(--ox-surface-3);
+  color: var(--ox-text-subtle);
+  font-size: 11.5px;
+  font-weight: 640;
+  letter-spacing: .035em;
+  /* the bar is chrome, not content — never selectable, not even inside a
+     container that otherwise opts back into selection */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.ox-codeblock__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ox-font-mono);
+}
+.ox-codeblock__copy {
+  flex: none;
+  margin-left: auto;
+  min-width: 68px;   /* the label swap must not resize the button */
+}
+.ox-codeblock__copy.is-copied { --_fg: var(--ox-success-text); border-color: var(--ox-success); }
+.ox-codeblock__copy.is-failed { --_fg: var(--ox-danger-text); border-color: var(--ox-danger); }
+
+/* inside the container the <pre> is only a scroller */
+.ox-codeblock > .ox-code {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overscroll-behavior-x: contain;
+}

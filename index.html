@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onyx UI · 组件样式库</title>
+<meta name="description" content="Onyx UI —— 一套克制、稳重的纯 CSS 组件库，主操作为墨黑，原生支持浅色与深色主题。">
+<link rel="stylesheet" href="static/onyx-ui.min.css">
+<!-- 可选扩展：用到才引入 -->
+<link rel="stylesheet" href="static/onyx-code.min.css">
+<link rel="stylesheet" href="static/onyx-drawer.min.css">
+<link rel="stylesheet" href="static/onyx-toast.min.css">
+<link rel="stylesheet" href="static/docs.min.css"></head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     导航栏 · .ox-navbar（组件库实例，不是文档站专用）
+     ══════════════════════════════════════════════════════════════════════════ -->
+<header class="ox-navbar ox-navbar--sticky">
+  <div class="ox-navbar__inner">
+    <button class="ox-navbar__link ox-navbar__link--icon ox-navbar__link--menu" type="button"
+            data-ox-drawer-open="#docsSidebar" aria-controls="docsSidebar" aria-expanded="false" aria-label="打开组件大纲">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+
+    <a class="ox-navbar__brand" href="#overview">
+      <span class="ox-navbar__brand-mark" aria-hidden="true">O</span>
+      Onyx UI
+      <span class="ox-badge ox-badge--neutral ox-badge--sm ox-hide-sm">v1.7.0</span>
+    </a>
+
+    <nav class="ox-navbar__nav ox-hide-md" aria-label="主导航">
+      <a class="ox-navbar__link is-active" href="#buttons">组件</a>
+      <a class="ox-navbar__link ox-navbar__link--collapse" href="#tokens">变量</a>
+      <a class="ox-navbar__link ox-navbar__link--collapse" href="#api">API</a>
+    </nav>
+
+    <div class="ox-navbar__actions">
+      <button class="ox-navbar__link ox-navbar__link--icon" id="notifyBtn" type="button" aria-label="通知">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M13.7 20a2 2 0 0 1-3.4 0"/></svg>
+        <span class="ox-avatar__presence ox-avatar__presence--busy" style="position:absolute;top:6px;right:6px;width:8px;height:8px;box-shadow:0 0 0 2px var(--ox-surface)"></span>
+      </button>
+
+      <button class="ox-navbar__link" id="themeToggle" type="button" aria-label="切换主题">
+        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>
+        </svg>
+        <span id="themeLabel" class="ox-hide-sm">切换浅色</span>
+      </button>
+
+      <span class="ox-navbar__sep ox-hide-sm" aria-hidden="true"></span>
+
+      <!-- 下拉菜单 · .ox-dropdown（基于原生 details，零 JS 依赖） -->
+      <details class="ox-dropdown ox-dropdown--end">
+        <summary class="ox-btn ox-btn--ghost ox-btn--sm">
+          <span class="ox-avatar ox-avatar--sm ox-avatar--ink">JD</span>
+          <span class="ox-hide-sm">Jane Doe</span>
+          <svg class="ox-dropdown__caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="ox-dropdown__menu">
+          <div class="ox-dropdown__head">
+            <div class="ox-user">
+              <span class="ox-avatar ox-avatar--ink">JD</span>
+              <span class="ox-user__body">
+                <span class="ox-user__name">Jane Doe</span>
+                <span class="ox-user__meta">jane@acme.com</span>
+              </span>
+            </div>
+          </div>
+          <div class="ox-dropdown__sep"></div>
+          <a class="ox-dropdown__item" href="#overview" data-ox-close>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+            个人资料
+          </a>
+          <a class="ox-dropdown__item" href="#tokens" data-ox-close>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.5-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.6a2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.7 1.7 0 0 0 21 11a2 2 0 1 1 0 4z"/></svg>
+            偏好设置
+            <span class="ox-kbd ox-dropdown__trail">⌘,</span>
+          </a>
+          <div class="ox-dropdown__sep"></div>
+          <button class="ox-dropdown__item ox-dropdown__item--danger" type="button" data-ox-close>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+            退出登录
+          </button>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<div class="doc-shell">
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       侧边栏 · .ox-sidebar（同时充当本页组件大纲，带滚动联动）
+       ══════════════════════════════════════════════════════════════════════ -->
+  <aside class="ox-sidebar ox-sidebar--sticky ox-sidebar--drawer doc-sidebar" id="docsSidebar" tabindex="-1" aria-label="组件大纲">
+    <div class="ox-sidebar__header">
+      <span class="ox-sidebar__header-title">组件大纲</span>
+      <span class="ox-spacer"></span>
+      <button class="ox-btn ox-btn--ghost ox-btn--icon ox-btn--sm" type="button" data-ox-drawer-close aria-label="关闭大纲">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <nav class="ox-sidebar__group" aria-label="开始">
+      <p class="ox-sidebar__title">开始</p>
+      <a class="ox-sidebar__item" href="#overview">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/></svg>
+        概览
+      </a>
+      <a class="ox-sidebar__item" href="#tokens">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="14.5" r="2.5"/><circle cx="7.5" cy="17.5" r="2.5"/><path d="M6 6h5M11.5 8.5L15.5 12"/></svg>
+        设计变量
+      </a>
+      <a class="ox-sidebar__item" href="#typography">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M8 6v14M16 6v14"/></svg>
+        文本样式
+      </a>
+    </nav>
+
+    <nav class="ox-sidebar__group" aria-label="组件">
+      <p class="ox-sidebar__title">组件</p>
+      <a class="ox-sidebar__item" href="#buttons">Button<span class="ox-sidebar__count">9</span></a>
+      <a class="ox-sidebar__item" href="#forms">Input<span class="ox-sidebar__count">4</span></a>
+      <a class="ox-sidebar__item" href="#selection">选择控件<span class="ox-sidebar__count">3</span></a>
+      <a class="ox-sidebar__item" href="#segmented">分段控件</a>
+      <a class="ox-sidebar__item" href="#dropdown">下拉菜单</a>
+      <a class="ox-sidebar__item" href="#navbar">导航栏</a>
+      <a class="ox-sidebar__item" href="#sidebar">侧边栏</a>
+      <a class="ox-sidebar__item" href="#card">卡片</a>
+      <a class="ox-sidebar__item" href="#avatar">头像与用户</a>
+      <a class="ox-sidebar__item" href="#badge">徽章</a>
+      <a class="ox-sidebar__item" href="#feedback">提示与反馈</a>
+      <a class="ox-sidebar__item" href="#toast">通知 Toast<span class="ox-sidebar__count">JS</span></a>
+    </nav>
+
+    <nav class="ox-sidebar__group" aria-label="资源">
+      <p class="ox-sidebar__title">资源</p>
+      <a class="ox-sidebar__item" href="#api">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M9 7h6"/></svg>
+        API 速查
+      </a>
+    </nav>
+
+    <div class="ox-sidebar__footer">
+      <div class="ox-user">
+        <span class="ox-avatar ox-avatar--sm ox-avatar--presence">JD<span class="ox-avatar__presence ox-avatar__presence--online"></span></span>
+        <span class="ox-user__body">
+          <span class="ox-user__name">Onyx UI</span>
+          <span class="ox-user__meta">MIT Licensed</span>
+        </span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <main class="doc-main">
+
+    <!-- ── 概览 ─────────────────────────────────────────────────────────── -->
+    <section class="doc-hero" id="overview">
+      <span class="doc-hero__eyebrow">
+        <span class="ox-badge ox-badge--success ox-badge--sm ox-badge--pulse"><span class="ox-badge__dot"></span></span>
+        v1.7.0 · 核心瘦身 + 三个按需引入的扩展 + 语法高亮
+      </span>
+      <h1 class="ox-display doc-hero__title">一套克制、稳重的 CSS 组件库</h1>
+      <p class="ox-lead doc-hero__lead">主操作使用近黑墨色而非蓝色，层次靠 1px 边框、留白与极轻的投影建立。
+        CSS 负责全部视觉与状态，一个约 19 KB（gzip 后 5 KB）的可选脚本只补上 CSS 做不到的事：下拉菜单的键盘导航与视口翻转、
+        以及 <code class="ox-mono">OnyxUI.toast()</code> 通知系统。没有它，一切依旧可用。</p>
+      <div class="doc-hero__actions">
+        <a class="ox-btn ox-btn--primary" href="#buttons">浏览组件</a>
+        <a class="ox-btn ox-btn--secondary" href="#tokens">查看变量</a>
+        <button class="ox-btn ox-btn--ghost" type="button" id="copyTokenHint">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+          CSS + 一个可选 JS
+        </button>
+      </div>
+      <div class="doc-hero__meta">
+        <div class="ox-stat doc-hero__stat"><span class="ox-stat__value">0</span><span class="ox-stat__label">依赖（含脚本）</span></div>
+        <div class="ox-stat doc-hero__stat"><span class="ox-stat__value">30+</span><span class="ox-stat__label">组件与变体</span></div>
+        <div class="ox-stat doc-hero__stat"><span class="ox-stat__value">2</span><span class="ox-stat__label">浅色 / 深色主题</span></div>
+        <div class="ox-stat doc-hero__stat"><span class="ox-stat__value">100%</span><span class="ox-stat__label">变量驱动</span></div>
+      </div>
+    </section>
+
+    <!-- ── 设计变量 ─────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="tokens">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">设计变量</h2>
+          <p class="ox-card__desc">覆盖任意变量即可换肤，组件代码不用动</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">--ox-*</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="doc-swatches">
+          <div><div class="doc-swatch__chip" style="background:var(--ox-primary)"></div><div class="doc-swatch__name">primary</div></div>
+          <div><div class="doc-swatch__chip" style="background:var(--ox-success)"></div><div class="doc-swatch__name">success</div></div>
+          <div><div class="doc-swatch__chip" style="background:var(--ox-warning)"></div><div class="doc-swatch__name">warning</div></div>
+          <div><div class="doc-swatch__chip" style="background:var(--ox-danger)"></div><div class="doc-swatch__name">danger</div></div>
+          <div><div class="doc-swatch__chip" style="background:var(--ox-info)"></div><div class="doc-swatch__name">info</div></div>
+          <div><div class="doc-swatch__chip" style="background:var(--ox-purple)"></div><div class="doc-swatch__name">purple</div></div>
+          <div><div class="doc-swatch__chip" style="background:var(--ox-surface-3)"></div><div class="doc-swatch__name">surface-3</div></div>
+          <div><div class="doc-swatch__chip" style="background:var(--ox-border-strong)"></div><div class="doc-swatch__name">border</div></div>
+        </div>
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;!-- 核心：必需 --&gt;
+&lt;link rel="stylesheet" href="static/onyx-ui.min.css"&gt;
+
+&lt;!-- 可选扩展：用到哪个引哪个 --&gt;
+&lt;link rel="stylesheet" href="static/onyx-code.min.css"&gt;    &lt;!-- 代码容器 + 高亮配色 --&gt;
+&lt;link rel="stylesheet" href="static/onyx-drawer.min.css"&gt;  &lt;!-- 移动端抽屉 --&gt;
+&lt;link rel="stylesheet" href="static/onyx-toast.min.css"&gt;   &lt;!-- 通知卡片 --&gt;
+
+&lt;script src="static/onyx-ui.min.js"&gt;&lt;/script&gt;                  &lt;!-- 核心交互：菜单 + 触摸反馈 --&gt;
+&lt;script src="static/onyx-code.min.js"&gt;&lt;/script&gt;     &lt;!-- 代码容器 + 复制 --&gt;
+&lt;script src="static/onyx-drawer.min.js"&gt;&lt;/script&gt;   &lt;!-- 抽屉行为 --&gt;
+&lt;script src="static/onyx-toast.min.js"&gt;&lt;/script&gt;    &lt;!-- OnyxUI.toast() --&gt;</pre>
+          <pre class="ox-code" data-lang="css">/* 换成自己的品牌色 —— 所有组件自动跟随 */
+:root {
+  --ox-primary: #131519;      /* 主按钮 / 聚焦环 / 强调 */
+  --ox-primary-hover: #2f333a;
+  --ox-radius-md: 10px;       /* 控件圆角 */
+  --ox-h-md: 42px;            /* 控件高度 */
+  --ox-scrollbar-size: 10px;  /* 全局滚动条 */
+  --ox-scrollbar-thumb: #cfd5dd;
+  --ox-container-w: 1180px;   /* 内容宽度 */
+  --ox-sidebar-w: 256px;      /* 侧边栏宽度 */
+  --ox-navbar-h: 60px;        /* 导航栏高度 */
+}
+
+/* 高亮配色也能改（见「代码容器」） */
+:root { --ox-tok-keyword: var(--ox-purple-text); }</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 文本样式 ─────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="typography">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">文本样式</h2>
+          <p class="ox-card__desc">预设 9 级文字层级，外加富文本容器 <code class="ox-mono">.ox-prose</code></p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-display … .ox-caption</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="doc-demo" style="gap:22px">
+          <div class="doc-specimen">
+            <div class="doc-specimen__meta"><span class="ox-overline">.ox-display</span><span class="doc-note">40 / 700</span></div>
+            <p class="ox-display">稳稳当当，把事做完</p>
+          </div>
+          <div class="doc-specimen">
+            <div class="doc-specimen__meta"><span class="ox-overline">.ox-h1</span><span class="doc-note">30 / 690</span></div>
+            <p class="ox-h1">页面级标题</p>
+          </div>
+          <div class="doc-specimen">
+            <div class="doc-specimen__meta"><span class="ox-overline">.ox-h2</span><span class="doc-note">23 / 670</span></div>
+            <p class="ox-h2">区块标题</p>
+          </div>
+          <div class="doc-specimen">
+            <div class="doc-specimen__meta"><span class="ox-overline">.ox-h3</span><span class="doc-note">18 / 650</span></div>
+            <p class="ox-h3">小节标题</p>
+          </div>
+          <div class="doc-specimen">
+            <div class="doc-specimen__meta"><span class="ox-overline">.ox-h4</span><span class="doc-note">15 / 650</span></div>
+            <p class="ox-h4">卡片内标题</p>
+          </div>
+          <div class="doc-specimen">
+            <div class="doc-specimen__meta"><span class="ox-overline">.ox-lead</span><span class="doc-note">17 / 1.62</span></div>
+            <p class="ox-lead">导语用于承接标题，比正文略大、颜色略淡，读起来不抢戏。</p>
+          </div>
+          <div class="doc-specimen">
+            <div class="doc-specimen__meta"><span class="ox-overline">.ox-body</span><span class="doc-note">14 / 1.68</span></div>
+            <p class="ox-body">正文。这是界面上出现频率最高的字号，行高 1.68 让中文段落有呼吸感，长文阅读不累。</p>
+          </div>
+          <div class="doc-specimen">
+            <div class="doc-specimen__meta"><span class="ox-overline">.ox-small / .ox-caption</span><span class="doc-note">13 / 12</span></div>
+            <p class="ox-small">辅助说明文字。</p>
+            <p class="ox-caption">Captions sit at 12px in the subtle colour.</p>
+          </div>
+          <div class="doc-specimen">
+            <div class="doc-specimen__meta"><span class="ox-overline">.ox-overline</span><span class="doc-note">11 / 大写 + 字距</span></div>
+            <p class="ox-overline">Section overline</p>
+          </div>
+          <div class="doc-specimen">
+            <div class="doc-specimen__meta"><span class="ox-overline">.ox-quote</span><span class="doc-note">引用</span></div>
+            <p class="ox-quote">好的默认值，比一百个选项更有价值。</p>
+          </div>
+        </div>
+
+        <div class="doc-rule"><span>.ox-prose 富文本容器</span></div>
+        <div class="doc-preview">
+          <article class="ox-prose">
+            <h3>发布说明 v1.5.0</h3>
+            <p>本次补齐了<strong>代码容器</strong>，并把移动端的文本选中改成「按需开启」——
+              手机上长按不再动不动就选中一段文字。</p>
+            <ul>
+              <li>代码容器自带标题栏与复制按钮，按钮不再压在代码第一行上</li>
+              <li>复制优先走 <code>navigator.clipboard</code>，非安全上下文自动回退</li>
+              <li>触摸设备默认不可选中，<code>pre / code / input / textarea</code> 例外</li>
+            </ul>
+            <blockquote>升级无需改动既有标记：<code>&lt;pre class="ox-code"&gt;</code> 会被自动升级为完整容器。</blockquote>
+          </article>
+        </div>
+
+        <div class="doc-rule"><span>.ox-codeblock 代码容器</span></div>
+        <!-- 代码容器自带边框与底色，不要再放进 .doc-preview 画布，否则会套成两层框 -->
+        <div class="ox-codeblock">
+          <div class="ox-codeblock__bar">
+            <span class="ox-codeblock__title">index.html</span>
+            <button type="button" class="ox-btn ox-btn--ghost ox-btn--xs ox-codeblock__copy">复制</button>
+          </div>
+          <pre class="ox-code" data-lang="html">&lt;link rel="stylesheet" href="static/onyx-ui.min.css"&gt;
+&lt;link rel="stylesheet" href="static/onyx-code.min.css"&gt;
+
+&lt;script src="static/onyx-ui.min.js" defer&gt;&lt;/script&gt;
+&lt;script src="static/onyx-code.min.js" defer&gt;&lt;/script&gt;</pre>
+        </div>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;p class="ox-display"&gt;稳稳当当，把事做完&lt;/p&gt;
+&lt;h1 class="ox-h1"&gt;页面级标题&lt;/h1&gt;
+&lt;h2 class="ox-h2"&gt;区块标题&lt;/h2&gt;
+&lt;h3 class="ox-h3"&gt;小节标题&lt;/h3&gt;
+&lt;p class="ox-lead"&gt;导语&lt;/p&gt;
+&lt;p class="ox-body"&gt;正文&lt;/p&gt;
+&lt;p class="ox-small"&gt;辅助说明&lt;/p&gt;
+&lt;p class="ox-caption"&gt;注释文字&lt;/p&gt;
+&lt;p class="ox-overline"&gt;Section overline&lt;/p&gt;
+&lt;p class="ox-quote"&gt;引用内容&lt;/p&gt;
+&lt;pre class="ox-code"&gt;…&lt;/pre&gt;             &lt;!-- 代码块 --&gt;
+&lt;article class="ox-prose"&gt;…&lt;/article&gt;    &lt;!-- 富文本：自动排版 h2/p/ul/li/code/blockquote/hr --&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 按钮 ─────────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="buttons">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Button</h2>
+          <p class="ox-card__desc">六种语义 · 主按钮为墨黑，hover 时提亮并加深投影</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-btn</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="doc-demo__row">
+          <button class="ox-btn ox-btn--primary">Primary</button>
+          <button class="ox-btn ox-btn--secondary">Secondary</button>
+          <button class="ox-btn ox-btn--ghost">Ghost</button>
+          <button class="ox-btn ox-btn--success">Success</button>
+          <button class="ox-btn ox-btn--danger">Danger</button>
+          <button class="ox-btn" disabled>Disabled</button>
+        </div>
+
+        <div class="doc-rule"><span>Sizes</span></div>
+        <div class="doc-demo__row">
+          <button class="ox-btn ox-btn--primary ox-btn--xs">Extra small</button>
+          <button class="ox-btn ox-btn--primary ox-btn--sm">Small</button>
+          <button class="ox-btn ox-btn--primary">Medium</button>
+          <button class="ox-btn ox-btn--primary ox-btn--lg">Large</button>
+        </div>
+
+        <div class="doc-rule"><span>Soft &amp; quiet</span></div>
+        <div class="doc-demo__row">
+          <button class="ox-btn ox-btn--soft">Neutral</button>
+          <button class="ox-btn ox-btn--soft-info">Info</button>
+          <button class="ox-btn ox-btn--soft-success">Approved</button>
+          <button class="ox-btn ox-btn--soft-danger">Revoke</button>
+          <button class="ox-btn ox-btn--link">Inline link →</button>
+        </div>
+
+        <div class="doc-rule"><span>Shapes, icons &amp; states</span></div>
+        <div class="doc-demo__row">
+          <button class="ox-btn ox-btn--primary ox-btn--pill">Pill shape</button>
+          <button class="ox-btn ox-btn--secondary ox-btn--icon" aria-label="新增">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <button class="ox-btn ox-btn--primary is-loading"><span>Saving</span></button>
+          <div class="ox-tooltip" data-tooltip="已复制到剪贴板">
+            <button class="ox-btn ox-btn--secondary ox-btn--sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+              Hover / 长按
+            </button>
+          </div>
+          <div class="ox-btn-group">
+            <button class="ox-btn ox-btn--secondary ox-btn--sm">Day</button>
+            <button class="ox-btn ox-btn--secondary ox-btn--sm">Week</button>
+            <button class="ox-btn ox-btn--secondary ox-btn--sm">Month</button>
+          </div>
+        </div>
+
+        <div class="doc-rule"><span>Block width</span></div>
+        <button class="ox-btn ox-btn--primary ox-btn--block">Continue to billing</button>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;!-- 语义 --&gt;
+&lt;button class="ox-btn ox-btn--primary"&gt;Primary&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--secondary"&gt;Secondary&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--ghost"&gt;Ghost&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--success"&gt;Success&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--danger"&gt;Danger&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--info"&gt;Info&lt;/button&gt;
+&lt;button class="ox-btn" disabled&gt;Disabled&lt;/button&gt;
+
+&lt;!-- 淡色 / 轻量 --&gt;
+&lt;button class="ox-btn ox-btn--soft"&gt;Neutral&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--soft-info"&gt;Info&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--soft-success"&gt;Approved&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--soft-danger"&gt;Revoke&lt;/button&gt;
+&lt;a class="ox-btn ox-btn--link"&gt;Inline link&lt;/a&gt;
+
+&lt;!-- 尺寸 / 形状 / 状态 --&gt;
+&lt;button class="ox-btn ox-btn--primary ox-btn--xs"&gt;XS&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--primary ox-btn--sm"&gt;SM&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--primary ox-btn--lg"&gt;LG&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--primary ox-btn--pill"&gt;Pill&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--primary ox-btn--block"&gt;Block&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--secondary ox-btn--icon" aria-label="新增"&gt;&lt;svg …/&gt;&lt;/button&gt;
+&lt;button class="ox-btn ox-btn--primary is-loading"&gt;&lt;span&gt;Saving&lt;/span&gt;&lt;/button&gt;
+
+&lt;!-- 按钮组 --&gt;
+&lt;div class="ox-btn-group"&gt;
+  &lt;button class="ox-btn ox-btn--secondary ox-btn--sm"&gt;Day&lt;/button&gt;
+  &lt;button class="ox-btn ox-btn--secondary ox-btn--sm"&gt;Week&lt;/button&gt;
+&lt;/div&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 输入 ─────────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="forms">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Input</h2>
+          <p class="ox-card__desc">默认、聚焦、错误、成功 —— 由 <code class="ox-mono">aria-invalid</code> 或 class 驱动</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-input</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="ox-grid ox-grid--2" style="gap:26px 24px">
+          <div class="ox-field">
+            <label class="ox-label" for="f-default">Default</label>
+            <input class="ox-input" id="f-default" type="text" placeholder="Enter a value">
+          </div>
+          <div class="ox-field">
+            <label class="ox-label" for="f-focus">Focus state</label>
+            <input class="ox-input is-focus" id="f-focus" type="email" placeholder="your@email.com">
+            <p class="ox-help">Type your email to see validation states.</p>
+          </div>
+          <div class="ox-field">
+            <label class="ox-label" for="f-error">Error state</label>
+            <input class="ox-input is-error" id="f-error" type="text" value="invalid-value" aria-invalid="true">
+            <p class="ox-help ox-help--error">This field is required.</p>
+          </div>
+          <div class="ox-field">
+            <label class="ox-label" for="f-success">Success state</label>
+            <input class="ox-input is-success" id="f-success" type="email" value="jane@acme.com">
+            <p class="ox-help ox-help--success">Verified and ready.</p>
+          </div>
+          <div class="ox-field">
+            <label class="ox-label" for="f-prefix">With prefix &amp; suffix</label>
+            <div class="ox-input-group">
+              <span class="ox-input-group__addon ox-input-group__addon--prefix">https://</span>
+              <input class="ox-input" id="f-prefix" type="text" placeholder="acme">
+              <span class="ox-input-group__addon ox-input-group__addon--suffix">.com</span>
+            </div>
+          </div>
+          <div class="ox-field">
+            <label class="ox-label" for="f-icon">With icon</label>
+            <div class="ox-input-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+              <input class="ox-input" id="f-icon" type="search" placeholder="Search projects…">
+            </div>
+          </div>
+          <div class="ox-field">
+            <label class="ox-label" for="f-select">Select（原生）</label>
+            <div class="ox-select-wrap">
+              <select class="ox-select" id="f-select">
+                <option>Production · us-east-1</option>
+                <option>Staging · eu-west-2</option>
+                <option>Local · docker</option>
+              </select>
+            </div>
+            <p class="ox-help">原生 &lt;select&gt; 的弹出层由系统绘制、无法定制；需要富菜单请用下拉菜单组件。</p>
+          </div>
+          <div class="ox-field">
+            <label class="ox-label" for="f-disabled">Disabled</label>
+            <input class="ox-input" id="f-disabled" type="text" value="Locked by your admin" disabled>
+          </div>
+          <div class="ox-field">
+            <label class="ox-label" for="f-note">Textarea</label>
+            <textarea class="ox-textarea" id="f-note" placeholder="Add a note for the reviewer…"></textarea>
+          </div>
+          <div class="ox-field" style="gap:8px">
+            <span class="ox-label">Sizes</span>
+            <input class="ox-input ox-input--sm" type="text" placeholder="Small · 34px">
+            <input class="ox-input" type="text" placeholder="Medium · 42px">
+            <input class="ox-input ox-input--lg" type="text" placeholder="Large · 48px">
+          </div>
+        </div>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;div class="ox-field"&gt;
+  &lt;label class="ox-label" for="email"&gt;Default&lt;/label&gt;
+  &lt;input class="ox-input" id="email" type="email" placeholder="your@email.com"&gt;
+  &lt;p class="ox-help"&gt;辅助说明&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- 状态：is-focus / is-error / is-success，或直接使用 aria-invalid="true" --&gt;
+&lt;input class="ox-input is-error" aria-invalid="true" value="invalid-value"&gt;
+&lt;p class="ox-help ox-help--error"&gt;This field is required.&lt;/p&gt;
+
+&lt;input class="ox-input is-success" value="jane@acme.com"&gt;
+&lt;p class="ox-help ox-help--success"&gt;Verified and ready.&lt;/p&gt;
+
+&lt;!-- 前后缀 --&gt;
+&lt;div class="ox-input-group"&gt;
+  &lt;span class="ox-input-group__addon ox-input-group__addon--prefix"&gt;https://&lt;/span&gt;
+  &lt;input class="ox-input" type="text" placeholder="acme"&gt;
+  &lt;span class="ox-input-group__addon ox-input-group__addon--suffix"&gt;.com&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- 带图标 --&gt;
+&lt;div class="ox-input-icon"&gt;
+  &lt;svg width="16" height="16"&gt;…&lt;/svg&gt;
+  &lt;input class="ox-input" type="search" placeholder="Search projects…"&gt;
+&lt;/div&gt;
+
+&lt;!-- 原生下拉（弹出层由系统绘制，不能被 CSS 定制） --&gt;
+&lt;div class="ox-select-wrap"&gt;
+  &lt;select class="ox-select"&gt;&lt;option&gt;Production&lt;/option&gt;&lt;/select&gt;
+&lt;/div&gt;
+
+&lt;textarea class="ox-textarea" placeholder="Add a note…"&gt;&lt;/textarea&gt;
+&lt;input class="ox-input ox-input--sm"&gt;   &lt;!-- --sm / --lg --&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 选择控件 ─────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="selection">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">选择控件</h2>
+          <p class="ox-card__desc">勾选、单选、开关 —— 纯 CSS，保留原生键盘与读屏语义</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-choice · .ox-switch</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="ox-grid ox-grid--3">
+          <div class="doc-cell" style="gap:12px">
+            <span class="ox-label">Checkbox</span>
+            <label class="ox-choice"><input type="checkbox" checked><span class="ox-choice__box"></span>Auto-deploy on merge</label>
+            <label class="ox-choice"><input type="checkbox"><span class="ox-choice__box"></span>Run integration tests</label>
+            <label class="ox-choice"><input type="checkbox" disabled><span class="ox-choice__box"></span>Disabled · off</label>
+            <label class="ox-choice"><input type="checkbox" checked disabled><span class="ox-choice__box"></span>Disabled · on</label>
+          </div>
+          <div class="doc-cell" style="gap:12px">
+            <span class="ox-label">Radio</span>
+            <label class="ox-choice"><input type="radio" name="plan" checked><span class="ox-choice__dot"></span>Team</label>
+            <label class="ox-choice"><input type="radio" name="plan"><span class="ox-choice__dot"></span>Business</label>
+            <label class="ox-choice"><input type="radio" name="plan" disabled><span class="ox-choice__dot"></span>Disabled · off</label>
+            <label class="ox-choice"><input type="radio" name="plan2" checked disabled><span class="ox-choice__dot"></span>Disabled · on</label>
+          </div>
+          <div class="doc-cell" style="gap:12px">
+            <span class="ox-label">Switch</span>
+            <label class="ox-switch"><input type="checkbox" checked><span class="ox-switch__track"></span>Email digests</label>
+            <label class="ox-switch"><input type="checkbox"><span class="ox-switch__track"></span>Weekly report</label>
+            <label class="ox-switch"><input type="checkbox" disabled><span class="ox-switch__track"></span>Disabled · off</label>
+            <label class="ox-switch"><input type="checkbox" checked disabled><span class="ox-switch__track"></span>Disabled · on</label>
+          </div>
+        </div>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;!-- 复选 / 单选：input 必须紧邻自定义盒子，选中态由 CSS 接管 --&gt;
+&lt;label class="ox-choice"&gt;
+  &lt;input type="checkbox" checked&gt;&lt;span class="ox-choice__box"&gt;&lt;/span&gt;
+  Auto-deploy on merge
+&lt;/label&gt;
+
+&lt;label class="ox-choice"&gt;
+  &lt;input type="radio" name="plan"&gt;&lt;span class="ox-choice__dot"&gt;&lt;/span&gt;
+  Team
+&lt;/label&gt;
+
+&lt;!-- 开关 --&gt;
+&lt;label class="ox-switch"&gt;
+  &lt;input type="checkbox" checked&gt;&lt;span class="ox-switch__track"&gt;&lt;/span&gt;
+  Email digests
+&lt;/label&gt;
+
+&lt;!-- 禁用态：触摸端没有光标提示，所以靠视觉区分 ——
+     未选 = 虚线框 + 下沉底色；已选 = 整体中灰填充（而非墨黑） --&gt;
+&lt;label class="ox-choice"&gt;
+  &lt;input type="checkbox" disabled&gt;&lt;span class="ox-choice__box"&gt;&lt;/span&gt;
+  Disabled · off
+&lt;/label&gt;
+&lt;label class="ox-choice"&gt;
+  &lt;input type="checkbox" checked disabled&gt;&lt;span class="ox-choice__box"&gt;&lt;/span&gt;
+  Disabled · on
+&lt;/label&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 分段控件 ─────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="segmented">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Segmented</h2>
+          <p class="ox-card__desc">同层级视图切换，用 <code class="ox-mono">aria-selected</code> 标记当前项</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-segmented</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="doc-demo__row">
+          <div class="ox-segmented" role="tablist">
+            <button class="ox-segmented__item" role="tab" aria-selected="true">Overview</button>
+            <button class="ox-segmented__item" role="tab" aria-selected="false">Logs</button>
+            <button class="ox-segmented__item" role="tab" aria-selected="false">Settings</button>
+          </div>
+          <div class="ox-segmented" role="tablist">
+            <button class="ox-segmented__item" role="tab" aria-selected="false">日</button>
+            <button class="ox-segmented__item" role="tab" aria-selected="true">周</button>
+            <button class="ox-segmented__item" role="tab" aria-selected="false">月</button>
+          </div>
+        </div>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;div class="ox-segmented" role="tablist"&gt;
+  &lt;button class="ox-segmented__item" role="tab" aria-selected="true"&gt;Overview&lt;/button&gt;
+  &lt;button class="ox-segmented__item" role="tab" aria-selected="false"&gt;Logs&lt;/button&gt;
+  &lt;button class="ox-segmented__item" role="tab" aria-selected="false"&gt;Settings&lt;/button&gt;
+&lt;/div&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 下拉菜单 ─────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="dropdown">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Dropdown 下拉菜单</h2>
+          <p class="ox-card__desc">基于原生 <code class="ox-mono">&lt;details&gt;</code>；引入 <code class="ox-mono">onyx-ui.js</code> 后自动获得完整键盘导航与视口翻转</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-dropdown</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <p class="doc-demo__caption">原生 <code class="ox-mono">&lt;select&gt;</code> 的弹出层由操作系统绘制，CSS 无法触及；
+          需要分组、图标、快捷键提示或富内容时，用下面这套菜单替代。</p>
+
+        <div class="doc-preview" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;min-height:64px">
+          <!-- 账号菜单 -->
+          <details class="ox-dropdown">
+            <summary class="ox-btn ox-btn--secondary">账号菜单
+              <svg class="ox-dropdown__caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="ox-dropdown__menu">
+              <div class="ox-dropdown__head">
+                <div class="ox-user">
+                  <span class="ox-avatar ox-avatar--sm ox-avatar--presence">MK<span class="ox-avatar__presence ox-avatar__presence--online"></span></span>
+                  <span class="ox-user__body">
+                    <span class="ox-user__name">Mia Kim</span>
+                    <span class="ox-user__meta">mia@acme.com</span>
+                  </span>
+                </div>
+              </div>
+              <div class="ox-dropdown__sep"></div>
+              <a class="ox-dropdown__item" href="#dropdown">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+                个人资料
+              </a>
+              <button class="ox-dropdown__item" type="button">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>
+                消息通知
+                <span class="ox-badge ox-badge--danger ox-badge--sm ox-dropdown__trail">3</span>
+              </button>
+              <div class="ox-dropdown__sep"></div>
+              <button class="ox-dropdown__item ox-dropdown__item--danger" type="button">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+                退出登录
+              </button>
+            </div>
+          </details>
+
+          <!-- 筛选菜单：分组标题 + 勾选项 -->
+          <details class="ox-dropdown ox-dropdown--wide">
+            <summary class="ox-btn ox-btn--secondary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
+              筛选
+              <span class="ox-badge ox-badge--info ox-badge--sm">2</span>
+            </summary>
+            <div class="ox-dropdown__menu">
+              <p class="ox-dropdown__label">环境</p>
+              <button class="ox-dropdown__item is-checked" type="button" data-ox-check aria-checked="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"/></svg>
+                Production
+              </button>
+              <button class="ox-dropdown__item" type="button" data-ox-check aria-checked="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"/></svg>
+                Staging
+              </button>
+              <div class="ox-dropdown__sep"></div>
+              <p class="ox-dropdown__label">状态</p>
+              <button class="ox-dropdown__item is-checked" type="button" data-ox-check aria-checked="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"/></svg>
+                仅失败
+              </button>
+              <button class="ox-dropdown__item" type="button" data-ox-check aria-checked="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"/></svg>
+                仅运行中
+              </button>
+              <div class="ox-dropdown__sep"></div>
+              <div class="ox-dropdown__head" style="display:flex;gap:8px">
+                <button class="ox-btn ox-btn--ghost ox-btn--sm ox-w-full" type="button">重置</button>
+                <button class="ox-btn ox-btn--primary ox-btn--sm ox-w-full" type="button">应用</button>
+              </div>
+            </div>
+          </details>
+
+          <!-- 右对齐 · 图标触发 -->
+          <details class="ox-dropdown ox-dropdown--end">
+            <summary class="ox-btn ox-btn--ghost ox-btn--icon" aria-label="更多操作">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5.5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="18.5" r="1.7"/></svg>
+            </summary>
+            <div class="ox-dropdown__menu">
+              <a class="ox-dropdown__item" href="#dropdown" data-ox-close>重命名</a>
+              <a class="ox-dropdown__item" href="#dropdown" data-ox-close>复制链接</a>
+              <a class="ox-dropdown__item" href="#dropdown" data-ox-close>移动到…</a>
+              <div class="ox-dropdown__sep"></div>
+              <button class="ox-dropdown__item ox-dropdown__item--danger" type="button" data-ox-close>删除项目</button>
+            </div>
+          </details>
+        </div>
+
+        <p class="doc-note">引入了核心脚本后，下面这些行为已由库接管：
+          点击空白处或按 <span class="ox-kbd">Esc</span> 关闭并归还焦点、<span class="ox-kbd">↑</span><span class="ox-kbd">↓</span> 在菜单项间循环移动、
+          菜单靠近视口边缘时自动向上/向右翻转。</p>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;!-- --end 右对齐 · --up 向上弹出 · --wide 加宽 --&gt;
+&lt;details class="ox-dropdown ox-dropdown--end"&gt;
+  &lt;summary class="ox-btn ox-btn--secondary"&gt;
+    账号菜单
+    &lt;svg class="ox-dropdown__caret" width="12" height="12" viewBox="0 0 24 24"&gt;…&lt;/svg&gt;
+  &lt;/summary&gt;
+
+  &lt;div class="ox-dropdown__menu"&gt;
+    &lt;!-- 头部：用户信息 --&gt;
+    &lt;div class="ox-dropdown__head"&gt;
+      &lt;div class="ox-user"&gt;
+        &lt;span class="ox-avatar ox-avatar--sm ox-avatar--ink"&gt;MK&lt;/span&gt;
+        &lt;span class="ox-user__body"&gt;
+          &lt;span class="ox-user__name"&gt;Mia Kim&lt;/span&gt;
+          &lt;span class="ox-user__meta"&gt;mia@acme.com&lt;/span&gt;
+        &lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="ox-dropdown__sep"&gt;&lt;/div&gt;
+
+    &lt;!-- 分组标题 + 菜单项（a / button 均可） --&gt;
+    &lt;p class="ox-dropdown__label"&gt;环境&lt;/p&gt;
+    &lt;a class="ox-dropdown__item is-checked" href="#" data-ox-close&gt;
+      &lt;svg width="15" height="15"&gt;…&lt;/svg&gt;Production
+      &lt;span class="ox-kbd ox-dropdown__trail"&gt;⌘P&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;button class="ox-dropdown__item" type="button"&gt;Staging&lt;/button&gt;
+    &lt;button class="ox-dropdown__item ox-dropdown__item--danger" type="button" data-ox-close&gt;删除项目&lt;/button&gt;
+
+    &lt;div class="ox-dropdown__sep"&gt;&lt;/div&gt;
+    &lt;p class="ox-dropdown__empty"&gt;没有匹配项&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;!-- 交互增强（onyx-ui.js）：外部点击关闭 · Esc · ↑↓ 键盘循环 · 视口边缘自动翻转 --&gt;
+&lt;!-- 点击后自动关闭的菜单项 → data-ox-close --&gt;
+&lt;!-- 可勾选的多选项      → data-ox-check（点击切换 is-checked 与 aria-checked）--&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 导航栏 ───────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="navbar">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Navbar 导航栏</h2>
+          <p class="ox-card__desc">品牌 + 导航按钮 + 右侧操作区；悬停与当前态是<strong>从中心展开的下划线</strong></p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-navbar</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="doc-preview doc-preview--flush">
+          <header class="ox-navbar ox-navbar--flush">
+            <div class="ox-navbar__inner">
+              <a class="ox-navbar__brand" href="#navbar">
+                <span class="ox-navbar__brand-mark">A</span>Acme
+              </a>
+              <nav class="ox-navbar__nav">
+                <a class="ox-navbar__link is-active" href="#navbar">控制台</a>
+                <a class="ox-navbar__link" href="#navbar">报表</a>
+                <a class="ox-navbar__link ox-hide-sm" href="#navbar">成员</a>
+                <a class="ox-navbar__link ox-hide-sm" href="#navbar">设置</a>
+              </nav>
+              <div class="ox-navbar__actions">
+                <button class="ox-navbar__link ox-navbar__link--icon" aria-label="搜索">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+                </button>
+                <button class="ox-btn ox-btn--primary ox-btn--sm ox-hide-sm">升级套餐</button>
+                <span class="ox-avatar ox-avatar--sm ox-avatar--ink">JD</span>
+              </div>
+            </div>
+          </header>
+          <div class="doc-frame__body">
+            <p class="ox-small ox-text-muted" style="margin:0">页面内容区。导航栏高度由 <code class="ox-mono">--ox-navbar-h</code> 控制。</p>
+          </div>
+        </div>
+
+        <div class="doc-rule"><span>导航按钮状态</span></div>
+        <p class="doc-demo__caption">默认与当前之间只差一条下划线 —— 它从中间向两侧展开，文字颜色同步加深；
+          正方形图标按钮没有文字可划线，依旧使用浅色底。</p>
+        <div class="doc-demo__row" style="gap:6px">
+          <a class="ox-navbar__link" href="#navbar">默认</a>
+          <a class="ox-navbar__link is-hover" href="#navbar">悬停</a>
+          <a class="ox-navbar__link is-active" href="#navbar">当前</a>
+          <a class="ox-navbar__link" href="#navbar" style="opacity:.45">禁用</a>
+          <a class="ox-navbar__link" href="#navbar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l2.6 5.6 6.1.8-4.4 4.2 1 6-5.3-3-5.3 3 1-6L3.3 9.4l6.1-.8z"/></svg>
+            带图标
+          </a>
+          <a class="ox-navbar__link ox-navbar__link--pill" href="#navbar">--pill</a>
+          <button class="ox-navbar__link ox-navbar__link--icon" type="button" aria-label="搜索">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+          </button>
+        </div>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;header class="ox-navbar ox-navbar--sticky"&gt;
+  &lt;div class="ox-navbar__inner"&gt;
+    &lt;a class="ox-navbar__brand" href="/"&gt;
+      &lt;span class="ox-navbar__brand-mark"&gt;A&lt;/span&gt;Acme
+    &lt;/a&gt;
+
+    &lt;!-- 导航按钮：悬停 / 当前态 = 下划线从中心向两侧展开 --&gt;
+    &lt;!-- 手机上空间不够就把次要链接收起（.ox-hide-sm），或整个 nav 用 --&gt;
+    &lt;!-- .ox-hide-md 隐藏，把导航放进抽屉侧边栏 --&gt;
+    &lt;nav class="ox-navbar__nav"&gt;
+      &lt;a class="ox-navbar__link is-active" href="#"&gt;控制台&lt;/a&gt;
+      &lt;a class="ox-navbar__link" href="#"&gt;报表&lt;/a&gt;
+      &lt;a class="ox-navbar__link ox-hide-sm" href="#"&gt;成员&lt;/a&gt;
+    &lt;/nav&gt;
+
+    &lt;div class="ox-navbar__actions"&gt;
+      &lt;span class="ox-navbar__sep ox-hide-sm"&gt;&lt;/span&gt;
+      &lt;!-- 正方形图标按钮没有文字可划线，保留浅色底反馈 --&gt;
+      &lt;button class="ox-navbar__link ox-navbar__link--icon" aria-label="搜索"&gt;&lt;svg …/&gt;&lt;/button&gt;
+      &lt;button class="ox-btn ox-btn--primary ox-btn--sm ox-hide-sm"&gt;升级套餐&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+
+/* 下划线：文字下方 3px、高 2px，两端跟随 --_px（与 padding 同源）内缩 */
+.ox-navbar__link { --_px: 12px; }
+
+&lt;!-- 修饰类：--sticky 吸顶＋毛玻璃 · --flush 内容撑满 · --solid 不透明 · --bordered 底部投影 --&gt;
+&lt;!-- 状态：is-active 当前页 · is-hover 静态模拟悬停（文档 / 截图 / SSR） --&gt;
+&lt;!-- 结构：__inner / __brand / __brand-mark / __nav / __link / __link--icon / __actions / __sep --&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 侧边栏 ───────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="sidebar">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Sidebar 侧边栏</h2>
+          <p class="ox-card__desc">分组 + 计数徽标 + 当前项指示条；加 <code class="ox-mono">--drawer</code> 后在小屏变成抽屉菜单（本页左侧就是它）</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-sidebar</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="doc-frame doc-frame--tall">
+          <aside class="ox-sidebar" style="width:100%;height:100%;padding:16px;gap:18px">
+            <nav class="ox-sidebar__group">
+              <p class="ox-sidebar__title">工作区</p>
+              <a class="ox-sidebar__item is-active" href="#sidebar">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>
+                总览
+              </a>
+              <a class="ox-sidebar__item" href="#sidebar">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3.5-4 3 2.5L19 8"/></svg>
+                分析
+                <span class="ox-sidebar__count">7</span>
+              </a>
+              <a class="ox-sidebar__item" href="#sidebar">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+                部署记录
+              </a>
+            </nav>
+
+            <nav class="ox-sidebar__group">
+              <p class="ox-sidebar__title">项目</p>
+              <a class="ox-sidebar__item" href="#sidebar">web-app<span class="ox-sidebar__count">12</span></a>
+              <a class="ox-sidebar__item" href="#sidebar">design-system<span class="ox-sidebar__count">3</span></a>
+              <a class="ox-sidebar__item" href="#sidebar">infra<span class="ox-sidebar__count">28</span></a>
+            </nav>
+
+            <div class="ox-sidebar__footer">
+              <div class="ox-user">
+                <span class="ox-avatar ox-avatar--sm ox-avatar--ink">JD</span>
+                <span class="ox-user__body">
+                  <span class="ox-user__name">Jane Doe</span>
+                  <span class="ox-user__meta">Pro plan</span>
+                </span>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;!-- 桌面：普通侧边栏；≤ 1024px：从左侧滑出的抽屉 --&gt;
+&lt;aside class="ox-sidebar ox-sidebar--sticky ox-sidebar--drawer" id="nav" tabindex="-1"&gt;
+  &lt;!-- 仅在抽屉形态下显示 --&gt;
+  &lt;div class="ox-sidebar__header"&gt;
+    &lt;span class="ox-sidebar__header-title"&gt;组件大纲&lt;/span&gt;
+    &lt;span class="ox-spacer"&gt;&lt;/span&gt;
+    &lt;button class="ox-btn ox-btn--ghost ox-btn--icon ox-btn--sm" type="button" data-ox-drawer-close aria-label="关闭"&gt;&lt;svg …/&gt;&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;nav class="ox-sidebar__group"&gt;
+    &lt;p class="ox-sidebar__title"&gt;工作区&lt;/p&gt;
+    &lt;a class="ox-sidebar__item is-active" href="#overview"&gt;&lt;svg …/&gt;总览&lt;/a&gt;
+    &lt;a class="ox-sidebar__item" href="#analytics"&gt;分析&lt;span class="ox-sidebar__count"&gt;7&lt;/span&gt;&lt;/a&gt;
+  &lt;/nav&gt;
+
+  &lt;div class="ox-sidebar__footer"&gt;…&lt;/div&gt;
+&lt;/aside&gt;
+
+&lt;!-- 触发器（汉堡按钮，≤ 1024px 才显示）放在导航栏里 --&gt;
+&lt;button class="ox-navbar__link ox-navbar__link--icon ox-navbar__link--menu"
+        data-ox-drawer-open="#nav" aria-controls="nav" aria-expanded="false" aria-label="打开大纲"&gt;
+  &lt;svg …/&gt;
+&lt;/button&gt;
+
+/* 行为（onyx-drawer.js 提供）：遮罩点击、Esc 关闭并归还焦点、
+   Tab 在抽屉内循环、打开时锁定 body 滚动、窗口回到桌面宽度时自动关闭 */
+OnyxUI.drawer.open('#nav' | element, trigger);
+OnyxUI.drawer.close();
+OnyxUI.drawer.toggle(el, trigger);</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 卡片 ─────────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="card">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Card 卡片</h2>
+          <p class="ox-card__desc">基础、可交互（悬停上浮 + 投影加深）、抬升、悬浮</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-card</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <p class="doc-demo__caption">把鼠标移到卡片上试试 —— <code class="ox-mono">--interactive</code> 会轻微上浮 2px 并加深投影。</p>
+        <div class="ox-grid ox-grid--3">
+          <article class="ox-card ox-card--interactive">
+            <div class="ox-card__body">
+              <p class="ox-overline" style="margin-bottom:6px">Interactive</p>
+              <h4 class="ox-h4">可交互卡片</h4>
+              <p class="ox-small ox-text-muted" style="margin:6px 0 0">适合列表项、可点击入口。</p>
+            </div>
+          </article>
+          <article class="ox-card ox-card--raised ox-card--interactive">
+            <div class="ox-card__body">
+              <p class="ox-overline" style="margin-bottom:6px">Raised</p>
+              <h4 class="ox-h4">抬升卡片</h4>
+              <p class="ox-small ox-text-muted" style="margin:6px 0 0">静态投影，用于强调区块。</p>
+            </div>
+          </article>
+          <article class="ox-card ox-card--float ox-card--interactive">
+            <div class="ox-card__body">
+              <p class="ox-overline" style="margin-bottom:6px">Float</p>
+              <h4 class="ox-h4">悬浮卡片</h4>
+              <p class="ox-small ox-text-muted" style="margin:6px 0 0">无边框 + 大投影。</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="doc-rule"><span>完整结构</span></div>
+        <article class="ox-card" style="max-width:460px">
+          <div class="ox-card__header">
+            <div class="ox-card__heading">
+              <h3 class="ox-card__title">月度账单</h3>
+              <p class="ox-card__desc">2026 年 9 月 · 下一个账期 10 月 1 日</p>
+            </div>
+            <span class="ox-spacer"></span>
+            <span class="ox-badge ox-badge--success"><span class="ox-badge__dot"></span>已结清</span>
+          </div>
+          <div class="ox-card__body">
+            <div class="ox-stat">
+              <span class="ox-stat__value">$12,480</span>
+              <span class="ox-stat__label">含税总额</span>
+            </div>
+          </div>
+          <div class="ox-card__footer">
+            <button class="ox-btn ox-btn--secondary ox-btn--sm">下载发票</button>
+            <span class="ox-spacer"></span>
+            <button class="ox-btn ox-btn--ghost ox-btn--sm">了解更多</button>
+          </div>
+        </article>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;article class="ox-card ox-card--interactive"&gt;
+  &lt;div class="ox-card__header"&gt;
+    &lt;div class="ox-card__heading"&gt;
+      &lt;h3 class="ox-card__title"&gt;月度账单&lt;/h3&gt;
+      &lt;p class="ox-card__desc"&gt;2026 年 9 月&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;span class="ox-spacer"&gt;&lt;/span&gt;
+    &lt;span class="ox-badge ox-badge--success"&gt;&lt;span class="ox-badge__dot"&gt;&lt;/span&gt;已结清&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div class="ox-card__body"&gt;…&lt;/div&gt;
+
+  &lt;div class="ox-card__footer"&gt;
+    &lt;button class="ox-btn ox-btn--secondary ox-btn--sm"&gt;下载发票&lt;/button&gt;
+    &lt;span class="ox-spacer"&gt;&lt;/span&gt;
+    &lt;button class="ox-btn ox-btn--ghost ox-btn--sm"&gt;了解更多&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+
+&lt;!-- 修饰类：--interactive 悬停反馈 · --raised 静态投影 · --float 无边框大投影 --&gt;
+&lt;!-- 结构：__header / __heading / __title / __desc / __body / __footer --&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 头像 ─────────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="avatar">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Avatar 头像与用户</h2>
+          <p class="ox-card__desc">尺寸、墨黑底、在线状态点、头像组、用户信息行</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-avatar · .ox-user</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="doc-rule"><span>Sizes &amp; styles</span></div>
+        <div class="doc-demo__row">
+          <span class="ox-avatar ox-avatar--sm">SM</span>
+          <span class="ox-avatar">MD</span>
+          <span class="ox-avatar ox-avatar--lg">LG</span>
+          <span class="ox-avatar ox-avatar--ink">INK</span>
+          <span class="ox-avatar ox-avatar--squircle">SQ</span>
+          <span class="ox-avatar ox-avatar--ring">RG</span>
+        </div>
+
+        <div class="doc-rule"><span>Presence</span></div>
+        <div class="doc-demo__row">
+          <span class="ox-avatar ox-avatar--presence">JD<span class="ox-avatar__presence ox-avatar__presence--online"></span></span>
+          <span class="ox-avatar ox-avatar--presence">MK<span class="ox-avatar__presence ox-avatar__presence--away"></span></span>
+          <span class="ox-avatar ox-avatar--presence">AL<span class="ox-avatar__presence ox-avatar__presence--busy"></span></span>
+          <span class="ox-avatar ox-avatar--presence">+3<span class="ox-avatar__presence"></span></span>
+          <div class="ox-avatar-group" style="margin-left:12px">
+            <span class="ox-avatar ox-avatar--ink">JD</span>
+            <span class="ox-avatar">MK</span>
+            <span class="ox-avatar">AL</span>
+            <span class="ox-avatar">+2</span>
+          </div>
+        </div>
+
+        <div class="doc-rule"><span>User row</span></div>
+        <div class="doc-demo" style="max-width:440px">
+          <a class="ox-user" href="#avatar">
+            <span class="ox-avatar ox-avatar--presence ox-avatar--ink">JD<span class="ox-avatar__presence ox-avatar__presence--online"></span></span>
+            <span class="ox-user__body">
+              <span class="ox-user__name">Jane Doe</span>
+              <span class="ox-user__meta">jane@acme.com · Owner</span>
+            </span>
+            <span class="ox-spacer"></span>
+            <span class="ox-badge ox-badge--success ox-badge--sm"><span class="ox-badge__dot"></span>Active</span>
+          </a>
+          <a class="ox-user" href="#avatar">
+            <span class="ox-avatar ox-avatar--sm">MK</span>
+            <span class="ox-user__body">
+              <span class="ox-user__name">Mia Kim</span>
+              <span class="ox-user__meta">mia@acme.com · Developer</span>
+            </span>
+          </a>
+        </div>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;span class="ox-avatar ox-avatar--sm"&gt;SM&lt;/span&gt;
+&lt;span class="ox-avatar"&gt;MD&lt;/span&gt;
+&lt;span class="ox-avatar ox-avatar--lg"&gt;LG&lt;/span&gt;
+&lt;span class="ox-avatar ox-avatar--ink"&gt;INK&lt;/span&gt;        &lt;!-- 墨黑底 --&gt;
+&lt;span class="ox-avatar ox-avatar--squircle"&gt;SQ&lt;/span&gt;  &lt;!-- 圆角方形 --&gt;
+&lt;span class="ox-avatar ox-avatar--ring"&gt;RG&lt;/span&gt;      &lt;!-- 外圈描边 --&gt;
+
+&lt;!-- 在线状态点：父级加 --presence，子级放 __presence --&gt;
+&lt;span class="ox-avatar ox-avatar--presence"&gt;JD
+  &lt;span class="ox-avatar__presence ox-avatar__presence--online"&gt;&lt;/span&gt;
+&lt;/span&gt;
+&lt;!-- --online / --away / --busy / 默认（离线） --&gt;
+
+&lt;!-- 头像组 --&gt;
+&lt;div class="ox-avatar-group"&gt;
+  &lt;span class="ox-avatar ox-avatar--ink"&gt;JD&lt;/span&gt;
+  &lt;span class="ox-avatar"&gt;MK&lt;/span&gt;
+  &lt;span class="ox-avatar"&gt;+2&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- 用户信息行（菜单、列表通用） --&gt;
+&lt;a class="ox-user" href="/u/jane"&gt;
+  &lt;span class="ox-avatar ox-avatar--ink"&gt;JD&lt;/span&gt;
+  &lt;span class="ox-user__body"&gt;
+    &lt;span class="ox-user__name"&gt;Jane Doe&lt;/span&gt;
+    &lt;span class="ox-user__meta"&gt;jane@acme.com&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/a&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 徽章 ─────────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="badge">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Badge 徽章</h2>
+          <p class="ox-card__desc">同一套语义色，浅底深字，对比度始终达标</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-badge</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="doc-demo__row">
+          <span class="ox-badge ox-badge--success"><span class="ox-badge__dot"></span>Active</span>
+          <span class="ox-badge ox-badge--warning"><span class="ox-badge__dot"></span>Pending</span>
+          <span class="ox-badge ox-badge--danger"><span class="ox-badge__dot"></span>Failed</span>
+          <span class="ox-badge ox-badge--neutral"><span class="ox-badge__dot"></span>Draft</span>
+          <span class="ox-badge ox-badge--info"><span class="ox-badge__dot"></span>Enterprise</span>
+          <span class="ox-badge ox-badge--purple"><span class="ox-badge__dot"></span>Beta</span>
+        </div>
+        <div class="doc-rule"><span>Other shapes</span></div>
+        <div class="doc-demo__row">
+          <span class="ox-badge ox-badge--success ox-badge--pulse"><span class="ox-badge__dot"></span>Live</span>
+          <span class="ox-badge ox-badge--neutral">v2.4.1</span>
+          <span class="ox-badge ox-badge--neutral ox-badge--outline">Outlined</span>
+          <span class="ox-badge ox-badge--danger ox-badge--sm">12 errors</span>
+          <span class="ox-badge ox-badge--info ox-badge--sm">Pro plan</span>
+        </div>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;span class="ox-badge ox-badge--success"&gt;&lt;span class="ox-badge__dot"&gt;&lt;/span&gt;Active&lt;/span&gt;
+&lt;span class="ox-badge ox-badge--warning"&gt;Pending&lt;/span&gt;
+&lt;span class="ox-badge ox-badge--danger"&gt;Failed&lt;/span&gt;
+&lt;span class="ox-badge ox-badge--neutral"&gt;Draft&lt;/span&gt;
+&lt;span class="ox-badge ox-badge--info"&gt;Enterprise&lt;/span&gt;
+&lt;span class="ox-badge ox-badge--purple"&gt;Beta&lt;/span&gt;
+
+&lt;span class="ox-badge ox-badge--success ox-badge--pulse"&gt;…&lt;/span&gt;  &lt;!-- 光晕脉搏 --&gt;
+&lt;span class="ox-badge ox-badge--neutral ox-badge--outline"&gt;…&lt;/span&gt; &lt;!-- 描边款 --&gt;
+&lt;span class="ox-badge ox-badge--danger ox-badge--sm"&gt;…&lt;/span&gt;      &lt;!-- 小号 --&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 反馈 ─────────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="feedback">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">提示与反馈</h2>
+          <p class="ox-card__desc">Alert、Progress、Skeleton、Kbd、Tooltip</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-alert · .ox-progress</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <div class="ox-grid ox-grid--2" style="gap:14px">
+          <div class="ox-alert ox-alert--info">
+            <svg class="ox-alert__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8v.2"/></svg>
+            <div>
+              <p class="ox-alert__title">Deploy queued</p>
+              <p class="ox-alert__text">Your build will start in about 40 seconds.</p>
+            </div>
+          </div>
+          <div class="ox-alert ox-alert--success">
+            <svg class="ox-alert__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.4l2.4 2.4 4.6-4.9"/></svg>
+            <div>
+              <p class="ox-alert__title">Payment confirmed</p>
+              <p class="ox-alert__text">Invoice #1042 was paid on Sep 24.</p>
+            </div>
+          </div>
+          <div class="ox-alert ox-alert--warning">
+            <svg class="ox-alert__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L2.6 17a1.9 1.9 0 0 0 1.7 2.9h15.4A1.9 1.9 0 0 0 21.4 17L13.7 3.9a1.9 1.9 0 0 0-3.4 0z"/><path d="M12 9v4M12 16.6v.2"/></svg>
+            <div>
+              <p class="ox-alert__title">Trial ends in 3 days</p>
+              <p class="ox-alert__text">Add a payment method to keep the workspace active.</p>
+            </div>
+          </div>
+          <div class="ox-alert ox-alert--danger ox-alert--solid">
+            <svg class="ox-alert__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+            <div>
+              <p class="ox-alert__title">Build failed</p>
+              <p class="ox-alert__text">2 tests failed on the <span class="ox-mono">release/2.4</span> branch.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-rule"><span>Progress · Skeleton · Kbd · Tooltip</span></div>
+        <div class="ox-grid ox-grid--2" style="gap:24px">
+          <div class="doc-cell" style="gap:14px">
+            <div class="ox-progress"><div class="ox-progress__bar" style="width:64%"></div></div>
+            <div class="ox-progress ox-progress--lg ox-progress--success"><div class="ox-progress__bar" style="width:92%"></div></div>
+            <div class="doc-demo__row">
+              <span class="ox-kbd">⌘</span><span class="ox-kbd">K</span>
+              <span class="ox-text-subtle ox-small">to open the command palette</span>
+            </div>
+          </div>
+          <div class="doc-cell" style="gap:12px">
+            <div class="doc-demo__row" style="gap:12px;flex-wrap:nowrap">
+              <div class="ox-skeleton ox-skeleton--circle" style="width:40px;height:40px"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+                <div class="ox-skeleton ox-skeleton--text" style="width:46%"></div>
+                <div class="ox-skeleton ox-skeleton--text" style="width:88%"></div>
+                <div class="ox-skeleton ox-skeleton--text" style="width:70%"></div>
+              </div>
+            </div>
+            <div class="ox-skeleton" style="height:56px"></div>
+          </div>
+        </div>
+
+        <div class="doc-demo__row">
+          <div class="ox-tooltip" data-tooltip="鼠标悬停 / 手机长按">
+            <button class="ox-btn ox-btn--secondary ox-btn--sm">看看 Tooltip</button>
+          </div>
+          <div class="ox-tooltip" data-tooltip="也可以放在图标上">
+            <button class="ox-btn ox-btn--ghost ox-btn--icon ox-btn--sm" aria-label="更多信息">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8v.2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;!-- 提示条 --&gt;
+&lt;div class="ox-alert ox-alert--info"&gt;
+  &lt;svg class="ox-alert__icon" width="18" height="18"&gt;…&lt;/svg&gt;
+  &lt;div&gt;
+    &lt;p class="ox-alert__title"&gt;Deploy queued&lt;/p&gt;
+    &lt;p class="ox-alert__text"&gt;Your build will start in about 40 seconds.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- 语义：--info / --success / --warning / --danger；实心款再加 --solid --&gt;
+
+&lt;!-- 进度条 --&gt;
+&lt;div class="ox-progress"&gt;&lt;div class="ox-progress__bar" style="width:64%"&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class="ox-progress ox-progress--lg ox-progress--success"&gt;…&lt;/div&gt;
+
+&lt;!-- 骨架屏 --&gt;
+&lt;div class="ox-skeleton ox-skeleton--text" style="width:60%"&gt;&lt;/div&gt;
+&lt;div class="ox-skeleton ox-skeleton--circle" style="width:40px;height:40px"&gt;&lt;/div&gt;
+
+&lt;!-- 快捷键 --&gt;
+&lt;span class="ox-kbd"&gt;⌘&lt;/span&gt;&lt;span class="ox-kbd"&gt;K&lt;/span&gt;
+
+&lt;!-- 气泡提示：鼠标悬停显示；手机上是长按显示（由 onyx-ui.js 处理） --&gt;
+&lt;div class="ox-tooltip" data-tooltip="已复制到剪贴板"&gt;
+  &lt;button class="ox-btn ox-btn--secondary ox-btn--sm"&gt;复制&lt;/button&gt;
+&lt;/div&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 通知 Toast ───────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="toast">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Toast 通知</h2>
+          <p class="ox-card__desc">浮层通知确实需要 JS —— 由可选扩展 <code class="ox-mono">onyx-toast.js</code> 提供</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--info ox-badge--sm">OnyxUI.toast()</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <p class="doc-demo__caption">点下面的按钮，通知会从右上角滑入。鼠标移到某条通知上，倒计时与进度条会一起暂停。</p>
+
+        <div class="doc-rule"><span>语义</span></div>
+        <div class="doc-demo__row">
+          <button class="ox-btn ox-btn--soft-success" type="button" data-demo-toast="success">成功</button>
+          <button class="ox-btn ox-btn--soft-info" type="button" data-demo-toast="info">信息</button>
+          <button class="ox-btn ox-btn--secondary" type="button" data-demo-toast="warning">警告</button>
+          <button class="ox-btn ox-btn--soft-danger" type="button" data-demo-toast="danger">错误</button>
+        </div>
+
+        <div class="doc-rule"><span>进阶用法</span></div>
+        <div class="doc-demo__row">
+          <button class="ox-btn ox-btn--secondary" type="button" data-demo-toast="action">带「撤销」操作</button>
+          <button class="ox-btn ox-btn--secondary" type="button" data-demo-toast="sticky">常驻不消失</button>
+          <button class="ox-btn ox-btn--secondary" type="button" data-demo-toast="update">同一条内更新进度</button>
+          <button class="ox-btn ox-btn--ghost" type="button" data-demo-toast="bottom">从右下角弹出</button>
+          <button class="ox-btn ox-btn--ghost" type="button" data-demo-toast="clear">全部清空</button>
+        </div>
+
+        <div class="doc-rule"><span>静态渲染（不需要 JS）</span></div>
+        <p class="doc-note">把下面这段标记直接写进页面，就是一个静态通知卡片；布局、配色、关闭按钮全部来自 CSS。</p>
+        <div class="doc-preview" style="max-width:440px">
+          <div class="ox-toast ox-toast--success" style="animation:none">
+            <svg class="ox-toast__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.4l2.4 2.4 4.6-4.9"/></svg>
+            <div class="ox-toast__body">
+              <p class="ox-toast__title">部署完成</p>
+              <p class="ox-toast__desc">release/2.4 已上线 3 个区域。</p>
+              <div class="ox-toast__actions">
+                <button class="ox-btn ox-btn--link ox-btn--sm" type="button">查看日志</button>
+              </div>
+            </div>
+            <button class="ox-toast__close" type="button" aria-label="关闭">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;!-- 1 · 引入：核心 + toast 扩展（不需要构建） --&gt;
+&lt;link rel="stylesheet" href="static/onyx-ui.min.css"&gt;
+&lt;link rel="stylesheet" href="static/onyx-toast.min.css"&gt;
+
+&lt;script src="static/onyx-ui.min.js"&gt;&lt;/script&gt;
+&lt;script src="static/onyx-toast.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- 2 · 调用 --&gt;
+&lt;script&gt;
+  // 字符串简写
+  OnyxUI.toast('已保存');
+
+  // 完整写法
+  OnyxUI.toast({
+    variant: 'success',            // neutral | info | success | warning | danger
+    title: '部署完成',
+    description: 'release/2.4 已上线 3 个区域。',
+    position: 'top-right',         // top|bottom × left|center|right
+    duration: 4200,                // 毫秒；0 = 常驻，鼠标悬停自动暂停
+    dismissible: true,             // 显示关闭按钮
+    action: { label: '撤销', onClick: function () {}, closeOnClick: true },
+    onClose: function (node) {}    // 关闭后回调
+  });
+
+  // 快捷方法
+  OnyxUI.toast.success('已保存');
+  OnyxUI.toast.info({ title: '提示', description: '…' });
+  OnyxUI.toast.warning('磁盘空间不足');
+  OnyxUI.toast.danger({ title: '构建失败', description: '2 个用例未通过' });
+
+  // 同一条通知原地更新（进度类场景）
+  OnyxUI.toast.info({ id: 'upload', title: '正在上传', description: '0%', duration: 0 });
+  OnyxUI.toast.update('upload', { description: '60%' });
+  OnyxUI.toast.success({ id: 'upload', title: '上传完成', duration: 3000 });
+
+  // 手动控制
+  var node = OnyxUI.toast.success('完成');
+  OnyxUI.toast.dismiss(node);        // 关掉指定的一条（也可传字符串 id）
+  OnyxUI.toast.clear();              // 关掉全部
+  OnyxUI.toast.clear('bottom-right');// 只清某个角落
+&lt;/script&gt;
+
+&lt;!-- 3 · 静态渲染（不引入 JS 也能用） --&gt;
+&lt;div class="ox-toast ox-toast--success"&gt;
+  &lt;svg class="ox-toast__icon"&gt;…&lt;/svg&gt;
+  &lt;div class="ox-toast__body"&gt;
+    &lt;p class="ox-toast__title"&gt;部署完成&lt;/p&gt;
+    &lt;p class="ox-toast__desc"&gt;release/2.4 已上线 3 个区域。&lt;/p&gt;
+    &lt;div class="ox-toast__actions"&gt;
+      &lt;button class="ox-btn ox-btn--link ox-btn--sm"&gt;查看日志&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;button class="ox-toast__close" aria-label="关闭"&gt;…&lt;/button&gt;
+&lt;/div&gt;</pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── API 速查 ─────────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="api">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">API 速查</h2>
+          <p class="ox-card__desc">完整说明（含全部修饰符与变量表）见 <code class="ox-mono">README.md</code></p>
+        </div>
+      </div>
+      <div class="ox-card__body doc-demo">
+        <dl class="doc-meta">
+          <dt>.ox-btn</dt>
+          <dd>基础按钮。<code class="ox-mono">--primary / --secondary / --ghost / --link / --soft[-tone] / --info / --success / --danger</code>，
+            <code class="ox-mono">--xs|-sm|-lg</code>，<code class="ox-mono">--pill / --block / --icon / is-loading</code>；禁用请用原生 <code class="ox-mono">disabled</code></dd>
+          <dt>.ox-btn-group</dt><dd>拼接式按钮组，内部自动处理首尾圆角与边框合并</dd>
+          <dt>.ox-field</dt><dd>表单单元：<code class="ox-mono">.ox-label</code> + 控件 + <code class="ox-mono">.ox-help[--error|-success]</code></dd>
+          <dt>.ox-input</dt><dd><code class="ox-mono">[aria-invalid]</code> 或 <code class="ox-mono">is-error / is-success / is-focus</code>；尺寸 <code class="ox-mono">--sm / --lg</code>；
+            配合 <code class="ox-mono">.ox-input-group</code>（前后缀）与 <code class="ox-mono">.ox-input-icon</code></dd>
+          <dt>.ox-select</dt><dd>原生下拉的样式化版本，需包在 <code class="ox-mono">.ox-select-wrap</code> 内以获得自绘箭头</dd>
+          <dt>.ox-choice</dt><dd>勾选与单选，子级 <code class="ox-mono">__box</code> 或 <code class="ox-mono">__dot</code></dd>
+          <dt>.ox-switch</dt><dd>开关，子级 <code class="ox-mono">__track</code></dd>
+          <dt>.ox-segmented</dt><dd>分段控件，当前项用 <code class="ox-mono">aria-selected="true"</code></dd>
+          <dt>.ox-dropdown</dt><dd>基于 <code class="ox-mono">&lt;details&gt;</code> 的菜单：<code class="ox-mono">__menu / __item / __label / __sep / __head / __empty / __caret / __trail</code>，
+            <code class="ox-mono">--end / --up / --wide</code></dd>
+          <dt>.ox-navbar</dt><dd><code class="ox-mono">__inner / __brand / __brand-mark / __nav / __link / __link--icon / __actions / __sep</code>，
+            <code class="ox-mono">--sticky / --flush / --solid / --bordered</code></dd>
+          <dt>.ox-sidebar</dt><dd><code class="ox-mono">__group / __title / __item / __count / __footer</code>，<code class="ox-mono">is-active</code>，<code class="ox-mono">--sticky</code></dd>
+          <dt>.ox-card</dt><dd><code class="ox-mono">__header / __heading / __title / __desc / __body / __footer</code>，<code class="ox-mono">--interactive / --raised / --float</code></dd>
+          <dt>.ox-avatar</dt><dd><code class="ox-mono">--sm / --lg / --ink / --squircle / --ring / --presence</code> + <code class="ox-mono">__presence</code>；<code class="ox-mono">.ox-avatar-group</code></dd>
+          <dt>.ox-user</dt><dd>头像 + 名称 + 副标题的横向组合，<code class="ox-mono">__body / __name / __meta</code></dd>
+          <dt>.ox-badge</dt><dd><code class="ox-mono">--neutral / --success / --warning / --danger / --info / --purple</code>，
+            <code class="ox-mono">--sm / --outline / --pulse</code> + <code class="ox-mono">__dot</code></dd>
+          <dt>.ox-alert</dt><dd><code class="ox-mono">--info / --success / --warning / --danger / --solid</code> + <code class="ox-mono">__icon / __title / __text</code></dd>
+          <dt>.ox-progress</dt><dd><code class="ox-mono">__bar</code>（宽度用内联 style），<code class="ox-mono">--lg / --success / --danger</code></dd>
+          <dt>.ox-skeleton</dt><dd>骨架屏，<code class="ox-mono">--text / --circle</code></dd>
+          <dt>.ox-tooltip</dt><dd>气泡提示，文本写在 <code class="ox-mono">data-tooltip</code> 属性上。鼠标悬停显示；
+            触摸设备上由 <code class="ox-mono">onyx-ui.js</code> 改为长按显示（触屏没有 hover）</dd>
+          <dt>.ox-toast</dt><dd>通知卡片：<code class="ox-mono">--neutral / --info / --success / --warning / --danger</code> +
+            <code class="ox-mono">__icon / __body / __title / __desc / __actions / __close / __progress</code>；
+            容器 <code class="ox-mono">.ox-toaster[data-position]</code></dd>
+          <dt>OnyxUI.toast</dt><dd>由 <code class="ox-mono">onyx-toast.js</code> 提供的通知 API：
+            <code class="ox-mono">toast(options|string)</code>、<code class="ox-mono">.success/.info/.warning/.danger/.neutral</code>、
+            <code class="ox-mono">.update(id, opts)</code>、<code class="ox-mono">.dismiss(node|id)</code>、<code class="ox-mono">.clear(position?)</code></dd>
+          <dt>OnyxUI.init</dt><dd>动态插入标记后再扫一遍（下拉菜单 + 代码容器），通常不需要手动调用</dd>
+          <dt>OnyxUI.copy</dt><dd>复制文本并返回 Promise；安全上下文走 <code class="ox-mono">navigator.clipboard</code>，
+            否则回退 <code class="ox-mono">execCommand</code>（局域网 HTTP 也能用）</dd>
+          <dt>.ox-codeblock</dt><dd>代码容器：<code class="ox-mono">__bar / __title / __copy</code>。
+            <code class="ox-mono">&lt;pre class="ox-code"&gt;</code> 会被 onyx-code.js 自动包进容器并补上复制按钮；
+            标题与文案用 <code class="ox-mono">data-title / data-copy-label / data-copied-label</code></dd>
+          <dt>文本</dt><dd><code class="ox-mono">.ox-display / .ox-h1 ~ .ox-h4 / .ox-lead / .ox-body / .ox-small / .ox-caption / .ox-overline / .ox-quote / .ox-code / .ox-codeblock / .ox-prose</code></dd>
+          <dt>布局</dt><dd><code class="ox-mono">.ox-container / .ox-stack / .ox-row / .ox-grid[--2|-3|-auto] / .ox-spacer / .ox-divider</code></dd>
+          <dt>工具类</dt><dd><code class="ox-mono">.ox-text-muted / .ox-text-subtle / .ox-text-success / .ox-text-danger / .ox-mono / .ox-w-full / .ox-sr-only / .ox-noselect / .ox-selectable</code></dd>
+        </dl>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="css">/* 主题：跟随系统 / 强制 / 局部 */
+&lt;html&gt;  &lt;html data-theme="light"&gt;  &lt;html data-theme="dark"&gt;  &lt;div data-theme="dark"&gt;
+
+/* 关键变量 */
+--ox-primary / -hover / -active / --ox-on-primary
+--ox-success / -warning / -danger / -info / -purple
+    （各自带 -hover / -active / -soft / -soft-hover / -text）
+--ox-page / --ox-surface / --ox-surface-2 / --ox-surface-3
+--ox-border / --ox-border-strong
+--ox-text / --ox-text-muted / --ox-text-subtle / --ox-text-inverse
+--ox-radius-xs|sm|md|lg|xl|pill
+--ox-h-xs|sm|md|lg         控件高度
+--ox-shadow-xs|sm|md|lg
+--ox-container-w / --ox-sidebar-w / --ox-navbar-h
+--ox-dur / --ox-ease</pre>
+        </details>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="doc-footer">
+  <div class="doc-footer__inner">
+    <span class="ox-navbar__brand-mark" aria-hidden="true">O</span>
+    <span>Onyx UI v1.7.0 · MIT Licensed · 零依赖</span>
+    <span class="ox-spacer"></span>
+    <a class="ox-btn ox-btn--ghost ox-btn--sm" href="#overview">回到顶部</a>
+  </div>
+</footer>
+
+<script src="static/onyx-ui.min.js"></script>
+<!-- 高亮引擎：外置，随便换（也可以什么都不引入，代码块就是一个纯文本框） -->
+<script src="vendor/prism/prism.min.js"></script>
+<script src="vendor/prism/prism-json.min.js"></script>
+<!-- 扩展：在核心之后加载 -->
+<script src="static/onyx-code.min.js"></script>
+<script src="static/onyx-drawer.min.js"></script>
+<script src="static/onyx-toast.min.js"></script>
+<script src="static/docs.min.js"></script>
+</body>
+</html>

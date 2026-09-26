@@ -1,0 +1,171 @@
+/*! Onyx UI · toast extension · v1.7.0 · MIT Licensed
+ * -----------------------------------------------------------------------------
+ * Optional. The `.ox-toast` card, the `.ox-toaster[data-position]` stack
+ * container, and the slide-in / slide-out keyframes.
+ * Load AFTER onyx-ui.css. Pair it with onyx-toast.js for `OnyxUI.toast()`.
+ *
+ *   <link rel="stylesheet" href="onyx-ui.css">
+ *   <link rel="stylesheet" href="extensions/onyx-toast.css">
+ *
+ * The markup also renders on its own without the script — drop `animation:none`
+ * on the card and you get a static notification.
+ * ========================================================================== */
+
+
+/* ==========================================================================
+   17 · Toast & toaster
+   ==========================================================================
+   Created by onyx-ui.js (`OnyxUI.toast(...)`). The markup it produces:
+
+     <div class="ox-toaster" data-position="top-right" role="region" aria-live="polite">
+       <div class="ox-toast ox-toast--success" role="status">
+         <span class="ox-toast__icon">…</span>
+         <div class="ox-toast__body">
+           <p class="ox-toast__title">…</p>
+           <p class="ox-toast__desc">…</p>
+           <div class="ox-toast__actions">…</div>
+         </div>
+         <button class="ox-toast__close" aria-label="关闭">…</button>
+         <span class="ox-toast__progress"></span>
+       </div>
+     </div>
+
+   Motion: each toast slides in **horizontally** from the edge its stack is
+   docked to (right stack → from the right, left stack → from the left) with a
+   long, decelerating travel and no vertical drift or scaling. Tune with
+   `--ox-dur-toast-in` / `--ox-dur-toast-out` / `--ox-ease-toast`.
+
+   To render one statically (no JS), just write the markup above with the
+   `ox-toaster` positioned inside a relative container instead of the viewport.
+   ========================================================================== */
+.ox-toaster {
+  position: fixed;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(380px, calc(100vw - 32px));
+  padding: var(--ox-sp-4);
+  pointer-events: none;
+}
+.ox-toaster > * { pointer-events: auto; }
+
+.ox-toaster[data-position="top-left"] { top: 0; left: 0; }
+.ox-toaster[data-position="top-center"] { top: 0; left: 50%; align-items: center; transform: translateX(-50%); }
+.ox-toaster[data-position="top-right"] { top: 0; right: 0; }
+/* bottom stacks grow away from the screen edge → column-reverse */
+.ox-toaster[data-position="bottom-left"] { bottom: 0; left: 0; flex-direction: column-reverse; }
+.ox-toaster[data-position="bottom-center"] { bottom: 0; left: 50%; align-items: center; transform: translateX(-50%); flex-direction: column-reverse; }
+.ox-toaster[data-position="bottom-right"] { bottom: 0; right: 0; flex-direction: column-reverse; }
+
+.ox-toast {
+  --_accent: var(--ox-text-subtle);
+  /* slide distance: positive = comes from the right edge, negative = from the left */
+  --_from-x: 24px;
+  position: relative;
+  display: flex;
+  gap: var(--ox-sp-3);
+  width: 100%;
+  padding: 14px;
+  background: var(--ox-surface);
+  border: 1px solid var(--ox-border);
+  border-radius: var(--ox-radius-lg);
+  box-shadow: var(--ox-shadow-lg);
+  overflow: hidden;
+  animation: ox-toast-in var(--ox-dur-toast-in) var(--ox-ease-toast) both;
+}
+/* each stack slides in from the edge it is docked to — always horizontally */
+.ox-toaster[data-position$="right"] > .ox-toast { --_from-x: calc(100% + var(--ox-sp-4)); }
+.ox-toaster[data-position$="left"] > .ox-toast { --_from-x: calc(-100% - var(--ox-sp-4)); }
+.ox-toaster[data-position$="center"] > .ox-toast { --_from-x: -32px; }
+
+.ox-toast[data-state="exit"] {
+  animation: ox-toast-out var(--ox-dur-toast-out) var(--ox-ease) both;
+}
+
+/* travel is pure X; opacity lands early so the card reads as solid while sliding */
+@keyframes ox-toast-in {
+  from { opacity: 0; transform: translateX(var(--_from-x)); }
+  38% { opacity: 1; }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes ox-toast-out {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(var(--_from-x)); }
+}
+
+.ox-toast--neutral { --_accent: var(--ox-text-subtle); }
+.ox-toast--info { --_accent: var(--ox-info); }
+.ox-toast--success { --_accent: var(--ox-success); }
+.ox-toast--warning { --_accent: var(--ox-warning); }
+.ox-toast--danger { --_accent: var(--ox-danger); }
+
+.ox-toast__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  color: var(--_accent);
+}
+.ox-toast__body { flex: 1 1 auto; min-width: 0; }
+.ox-toast__title {
+  margin: 0;
+  font-size: var(--ox-fs-md);
+  font-weight: 650;
+  letter-spacing: -.01em;
+  color: var(--ox-text);
+}
+.ox-toast__desc {
+  margin: 3px 0 0;
+  font-size: var(--ox-fs-sm);
+  line-height: 1.5;
+  color: var(--ox-text-muted);
+  overflow-wrap: anywhere;
+}
+.ox-toast__actions { display: flex; flex-wrap: wrap; gap: var(--ox-sp-2); margin-top: 10px; }
+
+.ox-toast__close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin: -2px -2px 0 0;
+  border: 0;
+  border-radius: var(--ox-radius-xs);
+  background: transparent;
+  color: var(--ox-text-subtle);
+  cursor: pointer;
+  transition:
+    background-color var(--ox-dur) var(--ox-ease),
+    color var(--ox-dur) var(--ox-ease);
+}
+.ox-toast__close:active { background: var(--ox-surface-3); color: var(--ox-text); }
+@media (hover: hover) {
+  .ox-toast__close:hover { background: var(--ox-surface-2); color: var(--ox-text); }
+}
+.ox-toast__close:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ox-ring); }
+
+.ox-toast__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--_accent);
+  opacity: .55;
+  transform-origin: left center;
+  animation: ox-toast-timer linear forwards;
+}
+@keyframes ox-toast-timer {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+/* the JS layer pauses both the bar and the timeout on real pointer hover; this
+   keeps the static (no-JS) markup working too. :focus-within is deliberately
+   not used — a tap leaves focus behind and would freeze the bar for good. */
+@media (hover: hover) {
+  .ox-toast:hover .ox-toast__progress { animation-play-state: paused; }
+}

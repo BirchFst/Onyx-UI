@@ -1,0 +1,68 @@
+/*! Onyx UI · drawer extension · v1.7.0 · MIT Licensed
+ * -----------------------------------------------------------------------------
+ * Optional. Turns `.ox-sidebar--drawer` into an off-canvas menu below 1024px,
+ * plus the `.ox-scrim` backdrop and the `.ox-no-scroll` body lock.
+ * Load AFTER onyx-ui.css. Pair it with onyx-drawer.js for the behaviour.
+ *
+ *   <link rel="stylesheet" href="onyx-ui.css">
+ *   <link rel="stylesheet" href="extensions/onyx-drawer.css">
+ *
+ * Above 1024px every rule here is inert — the sidebar simply stays in the flow.
+ * ========================================================================== */
+
+
+/* -----------------------------------------------------------------------------
+   Mobile drawer — add `.ox-sidebar--drawer` plus an id, then point a trigger at
+   it: `<button class="ox-navbar__link--menu" data-ox-drawer-open="#nav">`.
+   Below 1024px the sidebar leaves the flow, slides in from the left and is
+   backed by a scrim; above it, the class does nothing.
+   -------------------------------------------------------------------------- */
+.ox-sidebar--drawer:focus { outline: none; }
+
+.ox-scrim {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  background: var(--ox-scrim);
+  opacity: 0;
+  transition: opacity var(--ox-dur-slow) var(--ox-ease);
+}
+
+@media (max-width: 1024px) {
+  .ox-sidebar--drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 120;
+    width: min(84vw, 320px);
+    /* dvh keeps the footer reachable when mobile browser chrome collapses;
+       the vh line above is the fallback for older engines */
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    padding: var(--ox-sp-4) var(--ox-sp-4) var(--ox-sp-6);
+    background: var(--ox-surface);
+    border-right: 1px solid var(--ox-border);
+    box-shadow: var(--ox-shadow-lg);
+    transform: translateX(-102%);
+    visibility: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* only `transform` animates. Visibility must NOT sit on a transition clock:
+       if it never advances, a closed drawer stays focusable off-screen. OnyxUI
+       holds it visible for the slide-out, then hands it back to this rule. */
+    transition: transform var(--ox-dur-slow) var(--ox-ease-out);
+  }
+  .ox-sidebar--drawer.is-open {
+    transform: none;
+    visibility: visible;
+  }
+  .ox-sidebar--drawer > .ox-sidebar__header { display: flex; }
+
+  .ox-scrim { display: block; pointer-events: none; }
+  .ox-scrim.is-open { opacity: 1; pointer-events: auto; }
+}
+
+/* body lock while a drawer is open (applied by onyx-ui.js) */
+.ox-no-scroll { overflow: hidden; }

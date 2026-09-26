@@ -1,0 +1,15 @@
+{
+  "name": "onyx-ui",
+  "version": "1.7.0",
+  "private": true,
+  "description": "A refined CSS component library with a tiny optional JS layer.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "build:check": "node build.mjs --check"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
