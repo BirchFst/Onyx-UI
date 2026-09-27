@@ -1,6 +1,6 @@
 {
   "name": "onyx-ui",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "private": true,
   "description": "A refined CSS component library with a tiny optional JS layer.",
   "license": "MIT",

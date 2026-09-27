@@ -1,4 +1,4 @@
-/*! Onyx UI v1.7.0 — core behaviour layer (optional) · MIT Licensed
+/*! Onyx UI v1.8.0 — core behaviour layer (optional) · MIT Licensed
  * -----------------------------------------------------------------------------
  * CSS alone handles every visual state. This file adds only what CSS cannot,
  * and only what *every* page needs:
@@ -34,7 +34,7 @@
   'use strict';
 
   var doc = document;
-  var VERSION = '1.7.0';
+  var VERSION = '1.8.0';
 
   /* ────────────────────────────────────────────────────────────── utils ── */
 

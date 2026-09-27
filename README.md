@@ -7,7 +7,7 @@
 | | |
 | --- | --- |
 | 依赖 | **0**（页面侧零依赖；构建侧只有 esbuild 一个 devDependency） |
-| 体积 | 构建产物 gzip 后：核心 **10.5 KB**（CSS 8.9 + JS 1.6），全量 **15.9 KB** |
+| 体积 | 构建产物 gzip 后：核心 **10.9 KB**（CSS 9.3 + JS 1.6），全量 **16.3 KB** |
 | 构建 | `npm run build`（`src/` → `static/`）；不想装 Node 就直接引 `src/` 里的源码 |
 | 主题 | 浅色 / 深色，跟随系统或强制指定，支持任意子树局部换肤 |
 | 组件 | 30+ 个组件与变体，全部由 `--ox-*` 变量驱动 |
@@ -94,15 +94,15 @@ CSS 会补回被压缩器丢掉的 `@charset "UTF-8";`。
 
 | 产物 | raw | gzip | 说明 |
 | --- | --- | --- | --- |
-| `onyx-ui.min.css` | 43.1 KB | **8.9 KB** | 核心样式（必需） |
+| `onyx-ui.min.css` | 45.9 KB | **9.3 KB** | 核心样式（必需） |
 | `onyx-ui.min.js` | 3.8 KB | **1.6 KB** | 下拉菜单 + 触摸反馈 |
 | `onyx-code.min.*` | 3.5 + 3.2 KB | 1.1 + 1.4 KB | 代码容器 + 复制（不含高亮引擎） |
 | `onyx-drawer.min.*` | 0.9 + 2.8 KB | 0.5 + 1.2 KB | 移动端抽屉 |
 | `onyx-toast.min.*` | 3.2 + 7.5 KB | 1.1 + 2.7 KB | 通知 |
-| **`onyx-ui.full.min.*`** | 50.5 + 17.1 KB | **10.3 + 5.6 KB** | 核心 + 全部扩展 |
+| **`onyx-ui.full.min.*`** | 53.3 + 17.1 KB | **10.8 + 5.6 KB** | 核心 + 全部扩展 |
 
-**核心 gzip 后约 10.5 KB**，全量约 15.9 KB。相比最小化前（核心 16.1 + 3.5 = 19.6 KB）
-砍掉了大约一半。
+**核心 gzip 后约 10.9 KB**，全量约 16.3 KB。相比最小化前（核心 16.1 + 3.5 = 19.6 KB）
+砍掉了四成多。
 
 ---
 
@@ -163,6 +163,7 @@ CSS 会补回被压缩器丢掉的 `@charset "UTF-8";`。
 | `--ox-container-w` | `1180px` | `.ox-container` / `.ox-navbar__inner` 最大宽度 |
 | `--ox-sidebar-w` | `256px` | `.ox-sidebar` 宽度 |
 | `--ox-navbar-h` | `60px` | 导航栏高度（同时决定 sticky 侧边栏的偏移） |
+| `--ox-tabbar-h` | `56px` | 底部导航项的最小高度（= 触控目标，安全区另由 `env()` 追加） |
 | `--ox-top-inset` | `var(--ox-navbar-h)` | 滚动区顶部被 sticky 导航栏盖住的高度；`.ox-shell` 里为 `0px`（导航栏在滚动区之外） |
 | `--ox-sp-1…10` | 4…40 px | 间距梯度 |
 | `--ox-fs-xs…3xl` | 12…25 px | 字号梯度 |
@@ -208,6 +209,7 @@ CSS 会补回被压缩器丢掉的 `@charset "UTF-8";`。
 | --- | --- |
 | `.ox-container` | 居中定宽容器（`--ox-container-w` + 左右 20px padding） |
 | `.ox-shell` `.ox-shell__body` | App shell：导航栏留在滚动区之外，滚动条轨道从导航栏下方开始（见「导航栏」一节） |
+| `.ox-has-tabbar` | 给滚动元素补足被 `--fixed` 底部导航挡住的高度（含安全区） |
 | `.ox-stack` | 纵向流式布局，间距用 `style="--ox-stack-gap:24px"` 调整 |
 | `.ox-row` `.ox-row--tight` | 横向自动换行排列 |
 | `.ox-grid` `--2` `--3` `--auto` | 网格；`--2/--3` 在 760px 以下自动塌成单列 |
@@ -954,6 +956,58 @@ OnyxUI.drawer.toggle(el, triggerEl);
 
 不引入 `onyx-ui.js` 时，抽屉标记在桌面就是普通侧边栏，在小屏则保持隐藏（不会被误展开）。
 
+### 底部导航 · `.ox-tabbar`
+
+手机上的 3~5 个等宽目的地（纯 CSS：当前项就是 item 上的一个类，不需要脚本）。
+
+```html
+<body class="ox-shell">
+  <header class="ox-navbar">…</header>
+  <div class="ox-shell__body">…页面内容…</div>
+
+  <nav class="ox-tabbar" aria-label="主导航">
+    <a class="ox-tabbar__item is-active" href="/" aria-current="page">
+      <span class="ox-tabbar__icon"><svg …/></span>
+      <span class="ox-tabbar__label">首页</span>
+    </a>
+    <a class="ox-tabbar__item" href="/search">
+      <span class="ox-tabbar__icon"><svg …/><span class="ox-tabbar__badge">3</span></span>
+      <span class="ox-tabbar__label">发现</span>
+    </a>
+    <a class="ox-tabbar__item" href="/inbox">
+      <span class="ox-tabbar__icon"><svg …/></span>
+      <span class="ox-tabbar__label">消息</span>
+      <span class="ox-tabbar__badge ox-tabbar__badge--dot"></span>
+    </a>
+  </nav>
+</body>
+```
+
+| 类名 / 修饰符 | 说明 |
+| --- | --- |
+| `__item` | 一个目的地，`flex:1` 等宽；`<a>` 或 `<button>` 都能用。`min-height: var(--ox-tabbar-h)`（56px）本身就是触控目标 |
+| `__icon` | 图标的**药丸底容器**（当前项的标记就是它），也是徽标的定位参照 —— 徽标放进它里锚得最准 |
+| `__label` | 图标下方的文字，过长会省略号截断（可省） |
+| `__badge` | 计数气泡（默认 `--ox-danger` 底，文字用 `--ox-on-primary`）；`--neutral` 换中性底，`--dot` 变成 8px 小圆点。放在 `__icon` 里锚在药丸上；直接放进 `__item` 则按居中的图标块锚定 |
+| `is-active` / `[aria-current]` | 当前项：药丸底 `--ox-surface-3` + 文字 `--ox-text` + 字重 650 |
+| 禁用 | 原生 `disabled` 或 `aria-disabled="true"`：文字转 `--ox-disabled-fg`，**药丸底一并消失**（否则“死的当前项”看着像活的） |
+| `--fixed` | `position: fixed` 钉在视口底部（`z-index: 70`，低于遮罩 110 / 抽屉 120） |
+| `--mobile` | ≥ 1024px 隐藏。底部导航几乎只在手机上用，但隐藏与否交给使用者 |
+| `--bordered` | 额外一层顶部投影 |
+| `.ox-has-tabbar` | 加在滚动元素上，补足被 `--fixed` 挡住的高度（含安全区） |
+
+**两种放法**
+
+- **放进 `.ox-shell`**（推荐）：作为最后一个直接子元素，它就是一个普通行，滚动区自己停在它上方 ——
+  不用 `--fixed`、不用补 padding、内容也不会被盖住。
+- **整页滚动时**：加 `--fixed` 钉在视口底部，并给真正滚动的元素加 `.ox-has-tabbar`。
+
+**安全区**：`padding-bottom: env(safe-area-inset-bottom, 0px)` 追加在 `--ox-tabbar-h` 之下。
+没有刘海的环境 `env()` 就是 0，所以默认不会错位；要让 iOS 真的报出安全区（同时避免内容被刘海裁），
+在 `<meta name="viewport">` 里加 `viewport-fit=cover`。
+
+**按下反馈**：当前项的药丸底常驻；非当前项悬停（仅真实指针）用 `--ox-surface-2`，触摸按下用 `--ox-surface-3`。
+
 ### 卡片 · `.ox-card`
 
 ```html
@@ -1102,6 +1156,26 @@ OnyxUI.drawer.toggle(el, triggerEl);
 IE 不在支持范围内。
 
 ## 变更记录
+
+**v1.8.0 · App shell + 底部导航**
+
+- 修复：整页滚动时**滚动条轨道压在导航栏右侧** —— 滚动条属于「什么在滚动」，整页滚动时它属于视口、
+  被画在窗口整个右边缘（含导航栏那一行），而导航栏盒子止于 `clientWidth`，看起来就窄了一截；
+  那条缝是视口、不是内容盒，导航栏上的 CSS 改不了它（这是结构问题，不是样式问题）。
+- 新增：**App shell** —— `.ox-shell`（加在 `<body>`）+ `.ox-shell__body`（唯一滚动容器），
+  导航栏留在滚动区之外，滚动条轨道从导航栏**下方**开始，导航栏横跨整个窗口宽度。
+- 新增：变量 `--ox-top-inset`（默认 `var(--ox-navbar-h)`，`.ox-shell` 里为 `0px`）——
+  表达「滚动区顶部被导航栏盖住多少」，`.ox-sidebar--sticky` 的吸顶偏移与锚点 `scroll-margin-top` 都读它，
+  两种布局下视觉位置一致，业务 CSS 不用改。
+- 修复：`.ox-sidebar--sticky` 的 `top` 改读 `--ox-top-inset`；`max-height` 保持减 `--ox-navbar-h`
+  （两种布局下都正好留 32px 余量）。
+- 新增：**底部导航 `.ox-tabbar`** —— 等宽 item + 图标药丸底当前项 + 计数/小圆点徽标 + 安全区，
+  纯 CSS；`--fixed`（钉视口，配 `.ox-has-tabbar`）、`--mobile`（≥1024px 隐藏）、`--bordered`；
+  新变量 `--ox-tabbar-h`（56px）。
+- 抽屉：打开时除了锁 `body`，也锁 `.ox-shell__body` —— 否则视口本来就不滚，内容照样在抽屉背后滑。
+- 文档：展示页改为 App shell 结构（导航栏 + `.ox-shell__body` + 页脚），新增「底部导航」页；
+  `README` 新增 App shell 与 `.ox-tabbar` 两节。
+- 兼容：不写 `.ox-shell` 的老写法完全不变（`--ox-top-inset` 默认等于 `--ox-navbar-h`）。
 
 **v1.7.0 · 源码归位 `src/` + 构建产出 `static/`**
 

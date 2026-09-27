@@ -1,4 +1,4 @@
-/*! Onyx UI · toast extension · v1.7.0 · MIT Licensed
+/*! Onyx UI · toast extension · v1.8.0 · MIT Licensed
  * -----------------------------------------------------------------------------
  * Optional. Registers `OnyxUI.toast(...)` on the core object — stacked
  * notifications with a timer that pauses on hover and focus, action buttons, a

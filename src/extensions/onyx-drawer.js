@@ -1,4 +1,4 @@
-/*! Onyx UI · drawer extension · v1.7.0 · MIT Licensed
+/*! Onyx UI · drawer extension · v1.8.0 · MIT Licensed
  * -----------------------------------------------------------------------------
  * Optional. Drives `.ox-sidebar--drawer` below 1024px: opening from
  * `[data-ox-drawer-open="#id"]`, closing from `[data-ox-drawer-close]`, the

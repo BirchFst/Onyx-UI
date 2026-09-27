@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /* ============================================================================
-   Onyx UI · v1.7.0
+   Onyx UI · v1.8.0
    ----------------------------------------------------------------------------
    A refined CSS component library with a tiny optional JS layer.
    Signature: the primary action is a solid, grounded BLACK (not blue).
@@ -39,6 +39,7 @@
      04 · Card                   11 · Skeleton / Progress / Divider / Kbd
      05 · Button                 12 · Tooltip / Segmented
      06 · Field / Input / Select 13 · Navbar + app shell
+                                 13c · Tab bar (bottom nav)
                                  14 · Dropdown menu
                                  15 · Sidebar  (drawer → extension)
                                  16 · Type presets & prose
@@ -80,7 +81,7 @@
   [role="menuitem"], [role="option"], [role="switch"], [role="checkbox"],
   .ox-btn, .ox-noselect, .ox-choice, .ox-switch, .ox-segmented, .ox-navbar,
   .ox-sidebar__item, .ox-dropdown__item, .ox-toast__close, .ox-tooltip,
-  .ox-card--interactive, .ox-badge
+  .ox-card--interactive, .ox-badge, .ox-tabbar, .ox-tabbar__item
 ) {
   -webkit-user-select: none;
   user-select: none;
@@ -232,6 +233,7 @@
   --ox-container-w: 1180px;
   --ox-sidebar-w: 256px;
   --ox-navbar-h: 60px;
+  --ox-tabbar-h: 56px;
   /* How much of a sticky navbar hangs over the top of whatever scrolls.
      Default assumes the page scrolls and the navbar overlays it; `.ox-shell`
      drops it to 0 because there the navbar sits outside the scrolling area
@@ -1478,6 +1480,10 @@
 }
 .ox-shell > .ox-navbar { flex: none; }
 
+/* a tab bar is the other end of the same shell: a normal row under the
+   scroller, so it needs no fixed positioning and no padding compensation */
+.ox-shell > .ox-tabbar { flex: none; }
+
 .ox-shell__body {
   flex: 1 1 auto;
   /* a flex item refuses to shrink below its own content without this — the
@@ -1485,6 +1491,179 @@
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+
+
+/* ==========================================================================
+   13c · Tab bar
+   ==========================================================================
+   Mobile bottom navigation: three to five equal-width destinations pinned to
+   the bottom edge. Pure CSS — "current" is a class on the item, not a script.
+
+     <nav class="ox-tabbar">
+       <a class="ox-tabbar__item is-active" href="/" aria-current="page">
+         <span class="ox-tabbar__icon"><svg …/></span>首页
+       </a>
+       <a class="ox-tabbar__item" href="/search">
+         <span class="ox-tabbar__icon"><svg …/></span>发现
+         <span class="ox-tabbar__badge">3</span>
+       </a>
+     </nav>
+
+   Two placements:
+     • inside `.ox-shell`, last child — a normal row at the bottom of the
+       screen; the scroller stops above it, so nothing needs compensating;
+     • on a page that scrolls as a whole, add `--fixed` (pinned to the viewport)
+       plus `.ox-has-tabbar` on whatever scrolls, so content still clears it.
+
+   `--mobile` hides it from 1024px up — the tab bar is a phone pattern, but
+   hiding it is the author's call, not the library's.
+
+   Safe-area: the home-indicator strip is added below `--ox-tabbar-h`. `env()`
+   is 0 wherever the browser reports no inset, so there is nothing to guard
+   for; a page that wants real insets on iOS still needs `viewport-fit=cover`.
+   ========================================================================== */
+.ox-tabbar {
+  display: flex;
+  align-items: stretch;
+  background: var(--ox-surface);
+  border-top: 1px solid var(--ox-border);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.ox-tabbar--bordered { box-shadow: var(--ox-shadow-xs); }
+
+.ox-tabbar--fixed {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* over the page, under the scrim (110) and the drawer (120) */
+  z-index: 70;
+}
+
+/* room for a `--fixed` tab bar: put this on the element that scrolls */
+.ox-has-tabbar { padding-bottom: calc(var(--ox-tabbar-h) + env(safe-area-inset-bottom, 0px)); }
+
+@media (min-width: 1025px) {
+  .ox-tabbar--mobile { display: none; }
+}
+
+.ox-tabbar__item {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  /* the 44px hit area is the item itself — no ::before trick needed */
+  min-height: var(--ox-tabbar-h, 56px);
+  padding: 6px 4px;
+  border: 0;
+  background: transparent;
+  color: var(--ox-text-subtle);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: .01em;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--ox-dur) var(--ox-ease);
+}
+
+.ox-tabbar__item:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--ox-ring);
+  border-radius: var(--ox-radius-sm);
+}
+
+/* The icon sits in a pill so the current item has something solid to show.
+   The pill keeps its width when it is transparent — nothing shifts on tap.
+   A badge needs this wrapper too (it is the badge's positioning context). */
+.ox-tabbar__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 42px;
+  min-height: 26px;
+  padding: 3px 12px;
+  border-radius: var(--ox-radius-pill);
+  transition: background-color var(--ox-dur) var(--ox-ease);
+}
+
+.ox-tabbar__label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* — current ————————————————————————————————————————— */
+.ox-tabbar__item.is-active,
+.ox-tabbar__item[aria-current] {
+  color: var(--ox-text);
+  font-weight: 650;
+}
+.ox-tabbar__item.is-active .ox-tabbar__icon,
+.ox-tabbar__item[aria-current] .ox-tabbar__icon { background: var(--ox-surface-3); }
+
+/* pressed: on touch this is the only feedback a not-yet-current item gets */
+.ox-tabbar__item:active .ox-tabbar__icon { background: var(--ox-surface-3); }
+
+/* hover only where a pointer exists — and never on the current item, which
+   would otherwise look lighter while the pointer rests on it */
+@media (hover: hover) {
+  .ox-tabbar__item:hover:not(.is-active):not([aria-current]) { color: var(--ox-text-muted); }
+  .ox-tabbar__item:hover:not(.is-active):not([aria-current]) .ox-tabbar__icon { background: var(--ox-surface-2); }
+}
+
+/* disabled: the label greys out *and* the pill goes away, so a dead current
+   tab is never mistaken for a live one */
+.ox-tabbar__item:disabled,
+.ox-tabbar__item[aria-disabled="true"] {
+  color: var(--ox-disabled-fg);
+  cursor: not-allowed;
+}
+.ox-tabbar__item:disabled .ox-tabbar__icon,
+.ox-tabbar__item[aria-disabled="true"] .ox-tabbar__icon { background: transparent; }
+
+/* — badge ———————————————————————————————————————————
+   Best home is inside `__icon`: the pill is the anchor, so the badge stays
+   glued to the icon whatever the bar height, icon size or label length is. */
+.ox-tabbar__badge {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 5px;
+  border-radius: var(--ox-radius-pill);
+  background: var(--ox-danger);
+  color: var(--ox-on-primary);
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.ox-tabbar__icon > .ox-tabbar__badge { top: -3px; right: -6px; }
+.ox-tabbar__icon > .ox-tabbar__badge--dot { top: -1px; right: -2px; }
+
+/* A badge dropped straight into the item has no pill to lean on, so it is
+   anchored off the centred icon block instead — same spot for the usual icon
+   + label, and it survives a taller bar or a missing label. */
+.ox-tabbar__item > .ox-tabbar__badge { top: 50%; left: 50%; right: auto; margin: -24px 0 0 8px; }
+.ox-tabbar__item > .ox-tabbar__badge--dot { margin: -21px 0 0 11px; }
+
+.ox-tabbar__badge--neutral { background: var(--ox-surface-3); color: var(--ox-text-muted); }
+.ox-tabbar__badge--dot {
+  min-width: 0;
+  width: 8px;
+  height: 8px;
+  padding: 0;
 }
 
 

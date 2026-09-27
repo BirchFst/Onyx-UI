@@ -26,7 +26,7 @@
     <a class="ox-navbar__brand" href="#overview">
       <span class="ox-navbar__brand-mark" aria-hidden="true">O</span>
       Onyx UI
-      <span class="ox-badge ox-badge--neutral ox-badge--sm ox-hide-sm">v1.7.0</span>
+      <span class="ox-badge ox-badge--neutral ox-badge--sm ox-hide-sm">v1.8.0</span>
     </a>
 
     <nav class="ox-navbar__nav ox-hide-md" aria-label="主导航">
@@ -135,6 +135,7 @@
       <a class="ox-sidebar__item" href="#dropdown">下拉菜单</a>
       <a class="ox-sidebar__item" href="#navbar">导航栏</a>
       <a class="ox-sidebar__item" href="#sidebar">侧边栏</a>
+      <a class="ox-sidebar__item" href="#tabbar">底部导航</a>
       <a class="ox-sidebar__item" href="#card">卡片</a>
       <a class="ox-sidebar__item" href="#avatar">头像与用户</a>
       <a class="ox-sidebar__item" href="#badge">徽章</a>
@@ -168,11 +169,11 @@
     <section class="doc-hero" id="overview">
       <span class="doc-hero__eyebrow">
         <span class="ox-badge ox-badge--success ox-badge--sm ox-badge--pulse"><span class="ox-badge__dot"></span></span>
-        v1.7.0 · 核心瘦身 + 三个按需引入的扩展 + 语法高亮
+        v1.8.0 · App shell（导航栏不进滚动区）+ 底部导航 Tab bar
       </span>
       <h1 class="ox-display doc-hero__title">一套克制、稳重的 CSS 组件库</h1>
       <p class="ox-lead doc-hero__lead">主操作使用近黑墨色而非蓝色，层次靠 1px 边框、留白与极轻的投影建立。
-        CSS 负责全部视觉与状态，一个约 19 KB（gzip 后 5 KB）的可选脚本只补上 CSS 做不到的事：下拉菜单的键盘导航与视口翻转、
+        CSS 负责全部视觉与状态，一个约 17 KB（gzip 后 5.6 KB）的可选脚本只补上 CSS 做不到的事：下拉菜单的键盘导航与视口翻转、
         以及 <code class="ox-mono">OnyxUI.toast()</code> 通知系统。没有它，一切依旧可用。</p>
       <div class="doc-hero__actions">
         <a class="ox-btn ox-btn--primary" href="#buttons">浏览组件</a>
@@ -236,6 +237,7 @@
   --ox-container-w: 1180px;   /* 内容宽度 */
   --ox-sidebar-w: 256px;      /* 侧边栏宽度 */
   --ox-navbar-h: 60px;        /* 导航栏高度 */
+  --ox-tabbar-h: 56px;        /* 底部导航高度 */
   --ox-top-inset: 60px;       /* 滚动区顶部被导航栏盖住的高度（.ox-shell 里自动为 0） */
 }
 
@@ -988,6 +990,90 @@ OnyxUI.drawer.toggle(el, trigger);</pre>
       </div>
     </section>
 
+    <!-- ── 底部导航 ───────────────────────────────────────────────────── -->
+    <section class="ox-card doc-section" id="tabbar">
+      <div class="ox-card__header">
+        <div class="ox-card__heading">
+          <h2 class="ox-card__title">Tab bar 底部导航</h2>
+          <p class="ox-card__desc">3~5 个等宽目的地的手机底部导航；当前项 = 图标后的浅色药丸底 + 文字加深（纯 CSS）</p>
+        </div>
+        <span class="ox-spacer"></span>
+        <span class="ox-badge ox-badge--neutral ox-badge--sm">.ox-tabbar</span>
+      </div>
+      <div class="ox-card__body doc-demo">
+
+        <div class="doc-phone">
+          <div class="doc-phone__body">
+            <p class="ox-small ox-text-muted" style="margin:0">页面内容区。底部导航占 <code class="ox-mono">--ox-tabbar-h</code>（默认 56px），
+              设备有安全区时再追加一条 <code class="ox-mono">env(safe-area-inset-bottom)</code>。</p>
+          </div>
+
+          <nav class="ox-tabbar" aria-label="主导航">
+            <a class="ox-tabbar__item is-active" href="#tabbar" aria-current="page">
+              <span class="ox-tabbar__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/></svg></span>
+              <span class="ox-tabbar__label">首页</span>
+            </a>
+            <a class="ox-tabbar__item" href="#tabbar">
+              <span class="ox-tabbar__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg><span class="ox-tabbar__badge">3</span></span>
+              <span class="ox-tabbar__label">发现</span>
+            </a>
+            <a class="ox-tabbar__item" href="#tabbar">
+              <span class="ox-tabbar__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M13.7 20a2 2 0 0 1-3.4 0"/></svg><span class="ox-tabbar__badge ox-tabbar__badge--dot"></span></span>
+              <span class="ox-tabbar__label">消息</span>
+            </a>
+            <button class="ox-tabbar__item" type="button" disabled>
+              <span class="ox-tabbar__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg></span>
+              <span class="ox-tabbar__label">我的</span>
+            </button>
+          </nav>
+        </div>
+
+        <p class="doc-demo__caption">图标下方的文字可省（<code class="ox-mono">__label</code> 只是做省略号截断的包裹）；
+          <strong>徽标放进 <code class="ox-mono">__icon</code> 里</strong> —— 药丸就是它的定位参照，直接放在 item 里也能用
+          （会按居中的图标块锚定）；禁用项除了文字变灰，药丸底也会一起消失 —— 不会把“死掉的当前项”看成活的。</p>
+
+        <details class="doc-src">
+          <summary>查看代码</summary>
+          <pre class="ox-code" data-lang="html">&lt;!-- 方式一：放进 .ox-shell，作为最后一个子元素（推荐 —— 滚动区会自己停在它上方） --&gt;
+&lt;body class="ox-shell"&gt;
+  &lt;header class="ox-navbar"&gt;…&lt;/header&gt;
+  &lt;div class="ox-shell__body"&gt;…页面内容…&lt;/div&gt;
+
+  &lt;nav class="ox-tabbar" aria-label="主导航"&gt;
+    &lt;a class="ox-tabbar__item is-active" href="/" aria-current="page"&gt;
+      &lt;span class="ox-tabbar__icon"&gt;&lt;svg …/&gt;&lt;/span&gt;
+      &lt;span class="ox-tabbar__label"&gt;首页&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class="ox-tabbar__item" href="/search"&gt;
+      &lt;span class="ox-tabbar__icon"&gt;&lt;svg …/&gt;&lt;span class="ox-tabbar__badge"&gt;3&lt;/span&gt;&lt;/span&gt;
+      &lt;span class="ox-tabbar__label"&gt;发现&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class="ox-tabbar__item" href="/inbox"&gt;
+      &lt;span class="ox-tabbar__icon"&gt;&lt;svg …/&gt;&lt;span class="ox-tabbar__badge ox-tabbar__badge--dot"&gt;&lt;/span&gt;&lt;/span&gt;
+      &lt;span class="ox-tabbar__label"&gt;消息&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;!-- 也可以是 button；禁用用原生 disabled 或 aria-disabled="true" --&gt;
+    &lt;button class="ox-tabbar__item" type="button"&gt;…我的&lt;/button&gt;
+  &lt;/nav&gt;
+&lt;/body&gt;
+
+&lt;!-- 方式二：整页滚动时钉在视口底部；滚动元素记得加 .ox-has-tabbar 补足高度 --&gt;
+&lt;body class="ox-has-tabbar"&gt;
+  &lt;nav class="ox-tabbar ox-tabbar--fixed ox-tabbar--mobile"&gt;…&lt;/nav&gt;
+&lt;/body&gt;
+
+/* 修饰符 */
+--fixed        钉在视口底部（z-index 70，低于遮罩 110 / 抽屉 120）
+--mobile       ≥ 1024px 隐藏（底部导航几乎只在手机上用）
+--bordered     额外一层顶部投影
+
+/* 高度与安全区 */
+--ox-tabbar-h: 56px       项的最小高度 = 触控目标；iPhone 小白条由 env() 追加在内边距上，
+                          没有 viewport-fit=cover 也不会错位，想要真安全区再给 meta viewport 加上它 */</pre>
+        </details>
+      </div>
+    </section>
+
     <!-- ── 卡片 ─────────────────────────────────────────────────────────── -->
     <section class="ox-card doc-section" id="card">
       <div class="ox-card__header">
@@ -1448,6 +1534,9 @@ OnyxUI.drawer.toggle(el, trigger);</pre>
           <dt>.ox-navbar</dt><dd><code class="ox-mono">__inner / __brand / __brand-mark / __nav / __link / __link--icon / __actions / __sep</code>，
             <code class="ox-mono">--sticky / --flush / --solid / --bordered</code></dd>
           <dt>.ox-sidebar</dt><dd><code class="ox-mono">__group / __title / __item / __count / __footer</code>，<code class="ox-mono">is-active</code>，<code class="ox-mono">--sticky</code></dd>
+          <dt>.ox-tabbar</dt><dd>手机底部导航：<code class="ox-mono">__item / __icon / __label / __badge[--dot|-neutral]</code>，
+            <code class="ox-mono">is-active / aria-current</code>，<code class="ox-mono">--fixed / --mobile / --bordered</code>；
+            高度 <code class="ox-mono">--ox-tabbar-h</code>；<code class="ox-mono">--fixed</code> 时给滚动元素加 <code class="ox-mono">.ox-has-tabbar</code></dd>
           <dt>.ox-card</dt><dd><code class="ox-mono">__header / __heading / __title / __desc / __body / __footer</code>，<code class="ox-mono">--interactive / --raised / --float</code></dd>
           <dt>.ox-avatar</dt><dd><code class="ox-mono">--sm / --lg / --ink / --squircle / --ring / --presence</code> + <code class="ox-mono">__presence</code>；<code class="ox-mono">.ox-avatar-group</code></dd>
           <dt>.ox-user</dt><dd>头像 + 名称 + 副标题的横向组合，<code class="ox-mono">__body / __name / __meta</code></dd>
@@ -1471,7 +1560,7 @@ OnyxUI.drawer.toggle(el, trigger);</pre>
             <code class="ox-mono">&lt;pre class="ox-code"&gt;</code> 会被 onyx-code.js 自动包进容器并补上复制按钮；
             标题与文案用 <code class="ox-mono">data-title / data-copy-label / data-copied-label</code></dd>
           <dt>文本</dt><dd><code class="ox-mono">.ox-display / .ox-h1 ~ .ox-h4 / .ox-lead / .ox-body / .ox-small / .ox-caption / .ox-overline / .ox-quote / .ox-code / .ox-codeblock / .ox-prose</code></dd>
-          <dt>布局</dt><dd><code class="ox-mono">.ox-shell + .ox-shell__body / .ox-container / .ox-stack / .ox-row / .ox-grid[--2|-3|-auto] / .ox-spacer / .ox-divider</code></dd>
+          <dt>布局</dt><dd><code class="ox-mono">.ox-shell + .ox-shell__body / .ox-container / .ox-stack / .ox-row / .ox-grid[--2|-3|-auto] / .ox-spacer / .ox-divider / .ox-has-tabbar</code></dd>
           <dt>工具类</dt><dd><code class="ox-mono">.ox-text-muted / .ox-text-subtle / .ox-text-success / .ox-text-danger / .ox-mono / .ox-w-full / .ox-sr-only / .ox-noselect / .ox-selectable</code></dd>
         </dl>
 
@@ -1490,7 +1579,7 @@ OnyxUI.drawer.toggle(el, trigger);</pre>
 --ox-radius-xs|sm|md|lg|xl|pill
 --ox-h-xs|sm|md|lg         控件高度
 --ox-shadow-xs|sm|md|lg
---ox-container-w / --ox-sidebar-w / --ox-navbar-h / --ox-top-inset
+--ox-container-w / --ox-sidebar-w / --ox-navbar-h / --ox-top-inset / --ox-tabbar-h
 --ox-dur / --ox-ease</pre>
         </details>
       </div>
@@ -1502,7 +1591,7 @@ OnyxUI.drawer.toggle(el, trigger);</pre>
 <footer class="doc-footer">
   <div class="doc-footer__inner">
     <span class="ox-navbar__brand-mark" aria-hidden="true">O</span>
-    <span>Onyx UI v1.7.0 · MIT Licensed · 零依赖</span>
+    <span>Onyx UI v1.8.0 · MIT Licensed · 零依赖</span>
     <span class="ox-spacer"></span>
     <a class="ox-btn ox-btn--ghost ox-btn--sm" href="#overview">回到顶部</a>
   </div>

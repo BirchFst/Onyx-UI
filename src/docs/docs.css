@@ -129,6 +129,22 @@
 .doc-frame--tall { height: 300px; }
 .doc-frame__body { padding: var(--ox-sp-5); }
 
+/* fake phone screen — for components that live on the bottom edge (tab bar).
+   Put this straight in `.doc-demo`, never in `.doc-preview` (double frame). */
+.doc-phone {
+  display: flex;
+  flex-direction: column;
+  width: min(320px, 100%);
+  margin-inline: auto;
+  min-height: 320px;
+  border: 1px solid var(--ox-border);
+  border-radius: var(--ox-radius-xl);
+  overflow: hidden;
+  background: var(--ox-surface);
+  box-shadow: var(--ox-shadow-sm);
+}
+.doc-phone__body { flex: 1 1 auto; padding: var(--ox-sp-5); }
+
 .doc-rule {
   display: flex;
   align-items: center;

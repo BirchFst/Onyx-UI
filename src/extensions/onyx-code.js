@@ -1,4 +1,4 @@
-/*! Onyx UI · code extension · v1.7.0 · MIT Licensed
+/*! Onyx UI · code extension · v1.8.0 · MIT Licensed
  * -----------------------------------------------------------------------------
  * Optional. Wraps every `<pre class="ox-code">` in an `.ox-codeblock` container
  * with a toolbar, and wires up the copy button.
